@@ -1,0 +1,11 @@
+{
+  "db": {
+    "driver": "mysql",
+    "host": "localhost",
+    "username": "root",
+    "password": "lolpwnd",
+    "dbname": "mtg_tracker"
+  },
+  "datadir": "mtg",
+  "vcs": "none"
+}
