@@ -10,6 +10,7 @@
             <tr>
                 <th>Id</th>
                 <th>Name</th>
+                <th>Nickname</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -18,6 +19,7 @@
             <tr>
                 <td>{{ player.id }}</td>
                 <td>{{ player.Name }}</td>
+                <td>{{ player.Nickname }}</td>
                 <td>
                     <a href="{{ path('player_show', {'id': player.id}) }}">show</a>
                     <a href="{{ path('player_edit', {'id': player.id}) }}">edit</a>
