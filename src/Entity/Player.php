@@ -22,6 +22,23 @@ class Player
      */
     private $Name;
 
+    /**
+     * @ORM\Column(type="string", length=128)
+     */
+    private $Nickname;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Deck", mappedBy="primary_player")
+     */
+    private $decks;
+
+
+    public function __construct()
+    {
+        $this->decks = new ArrayCollection();
+    }
+
+
     public function getId(): ?int
     {
         return $this->id;
@@ -38,4 +55,27 @@ class Player
 
         return $this;
     }
+
+    public function getNickname(): ?string
+    {
+        return $this->Nickname;
+    }
+
+    public function setNickname(string $Nickname): self
+    {
+        $this->Nickname = $Nickname;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Deck[]
+     */
+    public function getDecks(): Collection
+    {
+        return $this->decks;
+    }
+
+
+
 }

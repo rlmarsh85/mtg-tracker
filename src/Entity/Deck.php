@@ -3,7 +3,10 @@
 namespace App\Entity;
 
 use App\Repository\DeckRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Color;
 
 /**
  * @ORM\Entity(repositoryClass=DeckRepository::class)
@@ -28,14 +31,39 @@ class Deck
     private $Description;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\ManyToOne(targetEntity="App\Entity\GameFormat")
      */
-    private $format_id;
+    private $primary_format;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Player", inversedBy="decks")
      */
-    private $primary_player_id;
+    private $primary_player;
+
+
+    /**
+     * Many Users have Many Groups.
+     * @ORM\ManyToMany(targetEntity="Color")
+     * @ORM\JoinTable(name="Decks_Colors",
+     *      joinColumns={@ORM\JoinColumn(name="deck_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="color_id", referencedColumnName="id")}
+     *      )
+     */
+    private $colors;
+
+
+    /**
+     * Many Users have Many Groups.
+     * @ORM\ManyToMany(targetEntity="Commander", inversedBy="decks")
+     * @ORM\JoinTable(name="commanders_decks")
+     */
+    private $commanders;
+
+    public function __construct()
+    {
+        $this->colors = new ArrayCollection();
+        $this->commanders = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -66,26 +94,74 @@ class Deck
         return $this;
     }
 
-    public function getFormatId(): ?int
+    public function getPrimaryPlayer(): ?Player
     {
-        return $this->format_id;
+        return $this->primary_player;
     }
 
-    public function setFormatId(?int $format_id): self
+    public function setPrimaryPlayer(?Player $primary_player): self
     {
-        $this->format_id = $format_id;
+        $this->primary_player = $primary_player;
 
         return $this;
     }
 
-    public function getPrimaryPlayerId(): ?int
+    /**
+     * @return Collection|Color[]
+     */
+    public function getColors(): Collection
     {
-        return $this->primary_player_id;
+        return $this->colors;
     }
 
-    public function setPrimaryPlayerId(int $primary_player_id): self
+    public function addColor(Color $color): self
     {
-        $this->primary_player_id = $primary_player_id;
+        if (!$this->colors->contains($color)) {
+            $this->colors[] = $color;
+        }
+
+        return $this;
+    }
+
+    public function removeColor(Color $color): self
+    {
+        $this->colors->removeElement($color);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Commander[]
+     */
+    public function getCommanders(): Collection
+    {
+        return $this->commanders;
+    }
+
+    public function addCommander(Commander $commander): self
+    {
+        if (!$this->commanders->contains($commander)) {
+            $this->commanders[] = $commander;
+        }
+
+        return $this;
+    }
+
+    public function removeCommander(Commander $commander): self
+    {
+        $this->commanders->removeElement($commander);
+
+        return $this;
+    }
+
+    public function getPrimaryFormat(): ?GameFormat
+    {
+        return $this->primary_format;
+    }
+
+    public function setPrimaryFormat(?GameFormat $primary_format): self
+    {
+        $this->primary_format = $primary_format;
 
         return $this;
     }
