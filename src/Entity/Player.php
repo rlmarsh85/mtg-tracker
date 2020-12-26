@@ -76,6 +76,10 @@ class Player
         return $this->decks;
     }
 
+    public function __toString(){
+      return $this->getName();
+    }
+
 
 
 }

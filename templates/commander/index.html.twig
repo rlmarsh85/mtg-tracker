@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Commander index{% endblock %}
+
+{% block body %}
+    <h1>Commander index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Scryfall_URL</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for commander in commanders %}
+            <tr>
+                <td>{{ commander.id }}</td>
+                <td>{{ commander.Name }}</td>
+                <td>{{ commander.ScryfallURL }}</td>
+                <td>
+                    <a href="{{ path('commander_show', {'id': commander.id}) }}">show</a>
+                    <a href="{{ path('commander_edit', {'id': commander.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('commander_new') }}">Create new</a>
+{% endblock %}
