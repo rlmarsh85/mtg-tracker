@@ -11,6 +11,10 @@
                 <th>Id</th>
                 <th>Name</th>
                 <th>Description</th>
+                <th>Format</th>
+                <th>Player</th>
+                <th>Color(s)</th>
+                <th>Commander(s)</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -20,6 +24,16 @@
                 <td>{{ deck.id }}</td>
                 <td>{{ deck.Name }}</td>
                 <td>{{ deck.Description }}</td>
+                <td>{{ deck.PrimaryFormat }}</td>
+                <td>{{ deck.PrimaryPlayer }}</td>
+                <td>
+                  {{ deck.Colors|join(', ') }}
+
+                </td>
+                <td>
+                  {{ deck.Commanders|join(', ') }}
+
+                </td>
                 <td>
                     <a href="{{ path('deck_show', {'id': deck.id}) }}">show</a>
                     <a href="{{ path('deck_edit', {'id': deck.id}) }}">edit</a>

@@ -18,7 +18,7 @@ class DeckType extends AbstractType
             ->add('primary_format', EntityType::class, [
                 'class' => 'App\Entity\GameFormat'
               ] )
-              
+
             ->add('primary_player', EntityType::class,[
               'class' => 'App\Entity\Player'
             ])
@@ -28,13 +28,13 @@ class DeckType extends AbstractType
               'multiple' => true,
               'expanded' => true
             ])
-            /*
+
             ->add('commanders', EntityType::class,[
               'class' => 'App\Entity\Commander',
               'multiple' => true,
               'expanded' => true
             ])
-            */
+            
         ;
     }
 

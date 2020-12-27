@@ -71,9 +71,9 @@ class Player
     }
 
     /**
-     * @return Collection|Deck[]
+     * @return ArrayCollection|Deck[]
      */
-    public function getDecks(): Collection
+    public function getDecks(): ArrayCollection
     {
         return $this->decks;
     }
