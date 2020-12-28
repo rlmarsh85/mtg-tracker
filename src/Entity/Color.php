@@ -20,7 +20,7 @@ class Color
     /**
      * @ORM\Column(type="string", length=12)
      */
-    private $Name;
+    private $name;
 
     public function getId(): ?int
     {
@@ -29,12 +29,12 @@ class Color
 
     public function getName(): ?string
     {
-        return $this->Name;
+        return $this->name;
     }
 
-    public function setName(string $Name): self
+    public function setName(string $name): self
     {
-        $this->Name = $Name;
+        $this->name = $name;
 
         return $this;
     }
