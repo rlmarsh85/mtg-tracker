@@ -59,10 +59,16 @@ class Deck
      */
     private $commanders;
 
+    /**
+     * @ORM\OneToMany(targetEntity=GamePlayer::class, mappedBy="Deck")
+     */
+    private $deckGames;
+
     public function __construct()
     {
         $this->colors = new ArrayCollection();
         $this->commanders = new ArrayCollection();
+        $this->deckGames = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -162,6 +168,36 @@ class Deck
     public function setPrimaryFormat(?GameFormat $primary_format): self
     {
         $this->primary_format = $primary_format;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|GamePlayer[]
+     */
+    public function getDeckGames(): Collection
+    {
+        return $this->deckGames;
+    }
+
+    public function addDeckGame(GamePlayer $deckGame): self
+    {
+        if (!$this->deckGames->contains($deckGame)) {
+            $this->deckGames[] = $deckGame;
+            $deckGame->setDeck($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDeckGame(GamePlayer $deckGame): self
+    {
+        if ($this->deckGames->removeElement($deckGame)) {
+            // set the owning side to null (unless already changed)
+            if ($deckGame->getDeck() === $this) {
+                $deckGame->setDeck(null);
+            }
+        }
 
         return $this;
     }
