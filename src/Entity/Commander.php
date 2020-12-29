@@ -23,12 +23,12 @@ class Commander
     /**
      * @ORM\Column(type="string", length=128)
      */
-    private $Name;
+    private $name;
 
     /**
      * @ORM\ManyToMany(targetEntity=Color::class)
      */
-    private $Colors;
+    private $colors;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -43,7 +43,7 @@ class Commander
 
     public function __construct()
     {
-        $this->Colors = new ArrayCollection();
+        $this->colors = new ArrayCollection();
         $this->decks = new ArrayCollection();
     }
 
@@ -57,9 +57,9 @@ class Commander
         return $this->Name;
     }
 
-    public function setName(string $Name): self
+    public function setName(string $name): self
     {
-        $this->Name = $Name;
+        $this->name = $name;
 
         return $this;
     }
@@ -69,13 +69,13 @@ class Commander
      */
     public function getColors(): Collection
     {
-        return $this->Colors;
+        return $this->colors;
     }
 
     public function addColor(Color $color): self
     {
-        if (!$this->Colors->contains($color)) {
-            $this->Colors[] = $color;
+        if (!$this->colors->contains($color)) {
+            $this->colors[] = $color;
         }
 
         return $this;
@@ -83,7 +83,7 @@ class Commander
 
     public function removeColor(Color $color): self
     {
-        $this->Colors->removeElement($color);
+        $this->colors->removeElement($color);
 
         return $this;
     }

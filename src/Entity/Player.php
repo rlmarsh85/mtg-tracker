@@ -23,12 +23,12 @@ class Player
     /**
      * @ORM\Column(type="string", length=128)
      */
-    private $Name;
+    private $name;
 
     /**
      * @ORM\Column(type="string", length=128)
      */
-    private $Nickname;
+    private $nickname;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Deck", mappedBy="primary_player")
@@ -55,24 +55,24 @@ class Player
 
     public function getName(): ?string
     {
-        return $this->Name;
+        return $this->name;
     }
 
-    public function setName(string $Name): self
+    public function setName(string $name): self
     {
-        $this->Name = $Name;
+        $this->name = $name;
 
         return $this;
     }
 
     public function getNickname(): ?string
     {
-        return $this->Nickname;
+        return $this->nickname;
     }
 
-    public function setNickname(string $Nickname): self
+    public function setNickname(string $nickname): self
     {
-        $this->Nickname = $Nickname;
+        $this->nickname = $nickname;
 
         return $this;
     }

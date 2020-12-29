@@ -20,12 +20,12 @@ class GameFormat
     /**
      * @ORM\Column(type="string", length=24)
      */
-    private $Name;
+    private $name;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $NumberPlayers;
+    private $numberPlayers;
 
     public function getId(): ?int
     {
@@ -34,24 +34,24 @@ class GameFormat
 
     public function getName(): ?string
     {
-        return $this->Name;
+        return $this->name;
     }
 
-    public function setName(string $Name): self
+    public function setName(string $name): self
     {
-        $this->Name = $Name;
+        $this->name = $name;
 
         return $this;
     }
 
     public function getNumberPlayers(): ?int
     {
-        return $this->NumberPlayers;
+        return $this->numberPlayers;
     }
 
-    public function setNumberPlayers(int $NumberPlayers): self
+    public function setNumberPlayers(int $numberPlayers): self
     {
-        $this->NumberPlayers = $NumberPlayers;
+        $this->numberPlayers = $numberPlayers;
 
         return $this;
     }
