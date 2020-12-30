@@ -51,7 +51,7 @@ class Game
         return $this->PlayDate;
     }
 
-    public function setPlayDate(\DateTimeInterface $PlayDate): self
+    public function setPlayDate(?\DateTimeInterface $PlayDate): self
     {
         $this->PlayDate = $PlayDate;
 
