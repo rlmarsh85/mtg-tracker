@@ -34,6 +34,8 @@ class Game
      */
     private $gamePlayers;
 
+    private $numberPlayers;
+
     public function __construct()
     {
         $this->gamePlayers = new ArrayCollection();
@@ -97,4 +99,13 @@ class Game
 
         return $this;
     }
+
+    public function getNumberPlayers(){
+      return $this->numberPlayers;
+    }
+
+    public function setNumberPlayers($num){
+      $this->numberPlayers = $num;
+    }
+
 }

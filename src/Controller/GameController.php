@@ -10,11 +10,26 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+use App\Entity\GamePlayer;
+use App\Entity\Player;
+use App\Repository\PlayerRepository;
+use App\Entity\Deck;
+use App\Repository\DeckRepository;
+
+use Symfony\Component\Form\Button;
+use Psr\Log\LoggerInterface;
+
 /**
  * @Route("/game")
  */
 class GameController extends AbstractController
 {
+
+    private $logger;
+    public function __construct(LoggerInterface $logger)
+    {
+        $this->logger = $logger;
+    }
     /**
      * @Route("/", name="game_index", methods={"GET"})
      */
@@ -30,16 +45,32 @@ class GameController extends AbstractController
      */
     public function new(Request $request): Response
     {
+        $this->logger->error("Calling new function");
         $game = new Game();
         $form = $this->createForm(GameType::class, $game);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $this->logger->error("Submitting form");
+/*
             $entityManager = $this->getDoctrine()->getManager();
+            $playerRepo = $entityManager->getRepository(Player::class);
+            $deckRepo = $entityManager->getRepository(Deck::class);
+
+
             $entityManager->persist($game);
             $entityManager->flush();
 
-            return $this->redirectToRoute('game_index');
+            $game_player = new GamePlayer();
+            $game_player->setPlayer($playerRepo->find($request->request->get("game")['Player1']));
+            $game_player->setDeck($deckRepo->find($request->request->get("game")['Player1Deck']));
+            $game_player->setGame($game);
+
+            $entityManager->persist($game_player);
+            $entityManager->flush();
+*/
+            //return $this->redirectToRoute('game_index');
         }
 
         return $this->render('game/new.html.twig', [

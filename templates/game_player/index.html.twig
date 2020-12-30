@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}GamePlayer index{% endblock %}
+
+{% block body %}
+    <h1>GamePlayer index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>WinningPlayer</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for game_player in game_players %}
+            <tr>
+                <td>{{ game_player.id }}</td>
+                <td>{{ game_player.WinningPlayer }}</td>
+                <td>
+                    <a href="{{ path('game_player_show', {'id': game_player.id}) }}">show</a>
+                    <a href="{{ path('game_player_edit', {'id': game_player.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('game_player_new') }}">Create new</a>
+{% endblock %}

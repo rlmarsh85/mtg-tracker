@@ -1,4 +1,40 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
+{% form_theme form with ['form_div_layout.html.twig'] %}
+
+
+
+    {{ form_row(form.NumberPlayers) }}
+
+    {{ form_row(form.PlayDate) }}
+    
+    {{ form_row(form.Format) }}
+
+
+    <div id = "players_section">
+
+      {{ form_row(form.Player1Section) }}
+
+      {% if form.Player2Section is defined %}
+        {{ form_row(form.Player2Section) }}
+      {% endif %}
+
+      {% if form.Player3Section is defined %}
+        {{ form_row(form.Player3Section) }}
+      {% endif %}
+
+      {% if form.Player4Section is defined %}
+        {{ form_row(form.Player4Section) }}
+      {% endif %}
+
+      {% if form.Player5Section is defined %}
+        {{ form_row(form.Player5Section) }}
+      {% endif %}
+
+      {% if form.Player6Section is defined %}
+        {{ form_row(form.Player6Section) }}
+      {% endif %}
+
+    </div>
+
     <button class="btn">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}
