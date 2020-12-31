@@ -7,26 +7,22 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-use Doctrine\ORM\EntityManagerInterface;
-use App\Repository\PlayerRepository;
-use App\Entity\Player;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-
-use App\Form\GamePlayerType;
 use Psr\Log\LoggerInterface;
 
-use Symfony\Component\Form\FormInterface;
+use App\Form\GamePlayerType;
+
+
+
 
 class GameType extends AbstractType
 {
 
-    private $manager;
     private $logger;
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -95,9 +91,8 @@ class GameType extends AbstractType
         ]);
     }
 
-    public function __construct(EntityManagerInterface  $objectManager, LoggerInterface $logger)
+    public function __construct(LoggerInterface $logger)
     {
-        $this->manager = $objectManager;
         $this->logger = $logger;
     }
 
