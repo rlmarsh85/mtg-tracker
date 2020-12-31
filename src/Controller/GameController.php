@@ -48,11 +48,12 @@ class GameController extends AbstractController
         $game = new Game();
         $form = $this->createForm(GameType::class, $game);
         $form->handleRequest($request);
+        $isAjax = $request->request->get("isAjax");
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid() && !$isAjax) {
 
             $this->logger->error("Submitting form");
-/*
+
             $entityManager = $this->getDoctrine()->getManager();
             $playerRepo = $entityManager->getRepository(Player::class);
             $deckRepo = $entityManager->getRepository(Deck::class);
@@ -61,15 +62,23 @@ class GameController extends AbstractController
             $entityManager->persist($game);
             $entityManager->flush();
 
-            $game_player = new GamePlayer();
-            $game_player->setPlayer($playerRepo->find($request->request->get("game")['Player1']));
-            $game_player->setDeck($deckRepo->find($request->request->get("game")['Player1Deck']));
-            $game_player->setGame($game);
+            for($i=1; $i <= $request->request->get("game")["NumberPlayers"]; $i++){
+              $game_player = new GamePlayer();
+              $player_data = $request->request->get("game")['Player' . $i . 'Section'];
+              $game_player->setPlayer($playerRepo->find($player_data['Player']));
+              $game_player->setDeck($deckRepo->find($player_data['Deck']));
+              $game_player->setGame($game);
 
-            $entityManager->persist($game_player);
-            $entityManager->flush();
-*/
-            //return $this->redirectToRoute('game_index');
+              $winner = (array_key_exists('WinningPlayer',$player_data) && $player_data['WinningPlayer'] == 1) ? 1 : 0;
+              $game_player->setWinningPlayer($winner);
+
+              $entityManager->persist($game_player);
+              $entityManager->flush();
+            }
+
+
+
+            return $this->redirectToRoute('game_index');
         }
 
         return $this->render('game/new.html.twig', [

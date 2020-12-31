@@ -15,7 +15,9 @@ class GamePlayerType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('WinningPlayer', CheckboxType ::class)
+            ->add('WinningPlayer', CheckboxType ::class, [
+              'required' => false
+            ])
 
             ->add('Player', EntityType::class,[
               'class' => 'App\Entity\Player'
