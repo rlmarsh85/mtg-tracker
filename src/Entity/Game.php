@@ -34,6 +34,10 @@ class Game
      */
     private $gamePlayers;
 
+    /**
+     * This doesn't map to anything in the database. It exists as a marker for the game type form
+     * to map between the client and the controller. Primarily used in adding new players.
+     */
     private $numberPlayers;
 
     public function __construct()

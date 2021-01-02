@@ -13,7 +13,7 @@ import './styles/app.scss';
 import './bootstrap';
 
 
-$(document).on('change', '#game_NumberPlayers', function() {
+$(document).on('click', '#add_player_button', function() {
 
 
   // ... retrieve the corresponding form.
@@ -22,6 +22,10 @@ $(document).on('change', '#game_NumberPlayers', function() {
 
   var data = {}; 
   var $number_players = $('#game_NumberPlayers');
+  var $num_players_current = $number_players.val();
+  $number_players.val(parseInt($number_players.val()) + 1);
+  var $num_players_next = $number_players.val();
+
   data[$number_players.attr('name')] = $number_players.val();
   data['game__token'] = $('#game__token').val();
   // Submit data via AJAX to the form's action path.
@@ -30,9 +34,19 @@ $(document).on('change', '#game_NumberPlayers', function() {
     type: $form.attr('method'),
     data : data,
     success: function(html) {
-      $('#players_section').replaceWith(
-        $(html).find('#players_section')
-      );
+
+     $('#game_Player' + $num_players_current + 'Section')
+      .after($(html).find('#game_Player' + $num_players_next + 'Section'))
+      .after('<div>Player' + $num_players_next + ' Section</div>');
+
+      if($num_players_next >= 6){
+        $('#add_player_button').hide();
+      }      
+
     }
+
+
+
+
   });
 });

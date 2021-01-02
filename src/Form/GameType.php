@@ -9,7 +9,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+//use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -31,6 +32,7 @@ class GameType extends AbstractType
         $builder
             ->add('PlayDate')
             ->add('Format')
+            /*
             ->add('NumberPlayers', ChoiceType::class,[
               'choices' => [
                 '2' => 2,
@@ -42,6 +44,10 @@ class GameType extends AbstractType
               'expanded' => false,
               'multiple' => false
             ])
+            */
+            ->add('NumberPlayers', HiddenType::class,[
+              'data' => 2
+            ])
             ->add('Player1Section', GamePlayerType::class,[
               'mapped' => false
             ])
@@ -51,13 +57,16 @@ class GameType extends AbstractType
           ;
 
           $formModifier = function (FormInterface $form,  $number_players = null) {
-
-            for($i = 0; $i < $number_players; $i++){
-              $form
-              ->add('Player' . ($i+1) . 'Section', GamePlayerType::class,[
-                'mapped' => false
-              ]);
+            if($number_players){
+              for($i = 1; $i < ($number_players+1) && $i <= 6; $i++){
+                $form
+                ->add('Player' . ($i) . 'Section', GamePlayerType::class,[
+                  'mapped' => false,
+                  'label' => 'lolomfg'
+                ]);
+              }
             }
+            
 
           };
 
@@ -73,12 +82,9 @@ class GameType extends AbstractType
           $builder->get('NumberPlayers')->addEventListener(
               FormEvents::POST_SUBMIT,
               function (FormEvent $event) use ($formModifier) {
-                  // It's important here to fetch $event->getForm()->getData(), as
-                  // $event->getData() will get you the client data (that is, the ID)
+
                   $number_players = $event->getForm()->getData();
 
-                  // since we've added the listener to the child, we'll have to pass on
-                  // the parent to the callback functions!
                   $formModifier($event->getForm()->getParent(), $number_players);
               }
           );
