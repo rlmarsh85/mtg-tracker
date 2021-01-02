@@ -5,12 +5,13 @@
         <title>{% block title %}Welcome!{% endblock %}</title>
         {% block stylesheets %}{% endblock %}
         <link href="{{ asset('build/app.css') }}" rel="stylesheet">
-        <script type="text/javascript" src="{{ asset('build/app.js') }}"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        {{ encore_entry_link_tags('app') }}
+        {{ encore_entry_script_tags('app') }}
+        
     </head>
     <body>
         {% block body %}{% endblock %}
-        <script src="{{ asset('build/jquery-3.5.1.js') }}"></script>
-        <script src="{{ asset('build/custom.js') }}"></script>
         {% block javascripts %}{% endblock %}
 
     </body>
