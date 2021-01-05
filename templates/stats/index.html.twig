@@ -1,0 +1,88 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Game Stats{% endblock %}
+
+{% block body %}
+    <h1>Game Stats</h1>
+
+    <table>
+        <tr rowspan="4">
+            <td>Player Ranks</td>
+        </tr>
+        <tr>
+            <td>Name</td>
+            <td>Number Games</td>
+            <td>Number Wins</td>
+            <td>Win Ratio (%)</td>
+        </tr>
+        {% for rank in player_ranks %}
+            <tr>
+                <td>{{rank.name}}</td>
+                <td>{{rank.num_games}}</td>
+                <td>{{rank.num_wins}}</td>
+                <td>{{rank.win_ratio}}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}        
+
+    </table>
+
+    <br />
+    <br />
+    <table>
+        <tr rowspan="4">
+            <td>Deck Ranks</td>
+        </tr>
+        <tr>
+            <td>Name</td>
+            <td>Number Games</td>
+            <td>Number Wins</td>
+            <td>Win Ratio (%)</td>
+        </tr>
+        {% for rank in deck_ranks %}
+            <tr>
+                <td>{{rank.name}}</td>
+                <td>{{rank.num_games}}</td>
+                <td>{{rank.num_wins}}</td>
+                <td>{{rank.win_ratio}}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %} 
+    </table>
+
+    <br />
+    <br />
+    <table>
+        <tr rowspan="4">
+            <td>Best Colors</td>
+        </tr>
+        <tr>
+            <td>Color</td>
+            <td>Number Games</td>
+            <td>Number Wins</td>
+            <td>Win Ratio (%)</td>
+        </tr>
+        {% for rank in deck_ranks %}
+            <tr>
+                <td>{{rank.name}}</td>
+                <td>{{rank.num_games}}</td>
+                <td>{{rank.num_wins}}</td>
+                <td>{{rank.win_ratio}}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}                       
+
+    </table>
+
+    <p>Total games: {{total_games}}</p>    
+
+{% endblock %}
