@@ -61,21 +61,6 @@ class GameController extends AbstractController
 
             $entityManager->persist($game);
             $entityManager->flush();
-/*
-            for($i=1; $i <= $request->request->get("game")["NumberPlayers"]; $i++){
-              $game_player = new GamePlayer();
-              $player_data = $request->request->get("game")['Player' . $i . 'Section'];
-              $game_player->setPlayer($playerRepo->find($player_data['Player']));
-              $game_player->setDeck($deckRepo->find($player_data['Deck']));
-              $game_player->setGame($game);
-
-              $winner = (array_key_exists('WinningPlayer',$player_data) && $player_data['WinningPlayer'] == 1) ? 1 : 0;
-              $game_player->setWinningPlayer($winner);
-
-              $entityManager->persist($game_player);
-              $entityManager->flush();
-            }
-*/
 
 
             return $this->redirectToRoute('game_index');

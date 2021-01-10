@@ -38,53 +38,9 @@ class GameType extends AbstractType
               'allow_add' => true,
               'by_reference' => false,                                              
             ]);
-/*
-            ->add('NumberPlayers', HiddenType::class,[
-              'data' => 2
-            ])
-            ->add('Player1Section', GamePlayerType::class,[
-              'mapped' => false
-            ])
-            ->add('Player2Section', GamePlayerType::class,[
-              'mapped' => false
-            ])
-            */
+
           ;
 
-          /*
-          $formModifier = function (FormInterface $form,  $number_players = null) {
-            if($number_players){
-              for($i = 1; $i < ($number_players+1) && $i <= 6; $i++){
-                $form
-                ->add('Player' . ($i) . 'Section', GamePlayerType::class,[
-                  'mapped' => false,
-                  'label' => 'lolomfg'
-                ]);
-              }
-            }
-            
-
-          };
-
-          $builder->addEventListener(
-              FormEvents::PRE_SET_DATA,
-              function (FormEvent $event) use ($formModifier) {
-                  $data = $event->getData();
-
-                  $formModifier($event->getForm(), $data->getNumberPlayers());
-              }
-          );
-
-          $builder->get('NumberPlayers')->addEventListener(
-              FormEvents::POST_SUBMIT,
-              function (FormEvent $event) use ($formModifier) {
-
-                  $number_players = $event->getForm()->getData();
-
-                  $formModifier($event->getForm()->getParent(), $number_players);
-              }
-          );
-          */
 
     }
 
