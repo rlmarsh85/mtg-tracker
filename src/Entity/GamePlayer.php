@@ -40,6 +40,11 @@ class GamePlayer
      */
     private $WinningPlayer;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $FirstOrSecondTurnSolRing;    
+
     public function getId(): ?int
     {
         return $this->id;
@@ -89,6 +94,18 @@ class GamePlayer
     public function setWinningPlayer(?bool $WinningPlayer): self
     {
         $this->WinningPlayer = $WinningPlayer;
+
+        return $this;
+    }
+
+    public function getFirstOrSecondTurnSolRing(): ?bool
+    {
+        return $this->FirstOrSecondTurnSolRing;
+    }
+
+    public function setFirstOrSecondTurnSolRing(?bool $FirstOrSecondTurnSolRing): self
+    {
+        $this->FirstOrSecondTurnSolRing = $FirstOrSecondTurnSolRing;
 
         return $this;
     }

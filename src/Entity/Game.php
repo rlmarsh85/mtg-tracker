@@ -26,6 +26,11 @@ class Game
     private $PlayDate;
 
     /**
+     * @ORM\Column(type="integer")
+     */
+    private $NumberTurns;    
+
+    /**
      * @ORM\ManyToOne(targetEntity=GameFormat::class)
      */
     private $Format;
@@ -96,6 +101,18 @@ class Game
                 $gamePlayer->setGame(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getNumberTurns()
+    {
+        return $this->NumberTurns;
+    }
+
+    public function setNumberTurns($NumberTurns): self
+    {
+        $this->NumberTurns = $NumberTurns;
 
         return $this;
     }

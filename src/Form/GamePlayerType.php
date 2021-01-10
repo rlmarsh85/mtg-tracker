@@ -15,9 +15,7 @@ class GamePlayerType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('WinningPlayer', CheckboxType ::class, [
-              'required' => false
-            ])
+
 
             ->add('Player', EntityType::class,[
               'class' => 'App\Entity\Player'
@@ -26,6 +24,15 @@ class GamePlayerType extends AbstractType
             ->add('Deck', EntityType::class,[
               'class' => 'App\Entity\Deck'
             ])
+
+            ->add('WinningPlayer', CheckboxType ::class, [
+              'required' => false
+            ])
+            
+            ->add('FirstOrSecondTurnSolRing', CheckboxType ::class, [
+              'required' => false,
+              'label' => 'Starting Sol Ring'
+            ])            
         ;
     }
 

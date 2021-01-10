@@ -32,6 +32,7 @@ class GameType extends AbstractType
         $builder
             ->add('PlayDate')
             ->add('Format')
+            ->add('NumberTurns')
             ->add('GamePlayers', CollectionType::class, [
               'entry_type' => GamePlayerType::class,       
               'entry_options' => ['label' => false],
