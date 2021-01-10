@@ -3,8 +3,6 @@
 
 
 
-    {{ form_row(form.NumberPlayers) }}
-
     {{ form_row(form.PlayDate) }}
     
     {{ form_row(form.Format) }}
@@ -12,29 +10,12 @@
 
     <div id = "players_section">
 
-      {{ form_row(form.Player1Section) }}
 
-      {% if form.Player2Section is defined %}
-        {{ form_row(form.Player2Section) }}
-      {% endif %}
-
-      {% if form.Player3Section is defined %}
-        {{ form_row(form.Player3Section) }}
-      {% endif %}
-
-      {% if form.Player4Section is defined %}
-        {{ form_row(form.Player4Section) }}
-      {% endif %}
-
-      {% if form.Player5Section is defined %}
-        {{ form_row(form.Player5Section) }}
-      {% endif %}
-
-      {% if form.Player6Section is defined %}
-        {{ form_row(form.Player6Section) }}
-      {% endif %}
+      
 
     </div>
-    <button type="button" id="add_player_button">Add Player</button> 
+    <ul class="GamePlayers" data-prototype="{{ form_widget(form.GamePlayers.vars.prototype)|e('html_attr') }}"></ul>
+    <button type="button" class="add_item_link" data-collection-holder-class="GamePlayers">Add Player</button>
+
     <button class="btn">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}

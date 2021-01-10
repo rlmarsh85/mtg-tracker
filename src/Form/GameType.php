@@ -9,7 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-//use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormEvent;
@@ -32,19 +32,13 @@ class GameType extends AbstractType
         $builder
             ->add('PlayDate')
             ->add('Format')
-            /*
-            ->add('NumberPlayers', ChoiceType::class,[
-              'choices' => [
-                '2' => 2,
-                '3' => 3,
-                '4' => 4,
-                '5' => 5,
-                '6' => 6
-              ],
-              'expanded' => false,
-              'multiple' => false
-            ])
-            */
+            ->add('GamePlayers', CollectionType::class, [
+              'entry_type' => GamePlayerType::class,       
+              'entry_options' => ['label' => false],
+              'allow_add' => true,
+              'by_reference' => false,                                              
+            ]);
+/*
             ->add('NumberPlayers', HiddenType::class,[
               'data' => 2
             ])
@@ -54,8 +48,10 @@ class GameType extends AbstractType
             ->add('Player2Section', GamePlayerType::class,[
               'mapped' => false
             ])
+            */
           ;
 
+          /*
           $formModifier = function (FormInterface $form,  $number_players = null) {
             if($number_players){
               for($i = 1; $i < ($number_players+1) && $i <= 6; $i++){
@@ -88,6 +84,8 @@ class GameType extends AbstractType
                   $formModifier($event->getForm()->getParent(), $number_players);
               }
           );
+          */
+
     }
 
     public function configureOptions(OptionsResolver $resolver)

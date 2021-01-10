@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+
 /**
  * @ORM\Entity(repositoryClass=GameRepository::class)
  */
@@ -30,15 +31,10 @@ class Game
     private $Format;
 
     /**
-     * @ORM\OneToMany(targetEntity=GamePlayer::class, mappedBy="Game", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=GamePlayer::class, mappedBy="Game", orphanRemoval=true, cascade={"persist"})
      */
     private $gamePlayers;
 
-    /**
-     * This doesn't map to anything in the database. It exists as a marker for the game type form
-     * to map between the client and the controller. Primarily used in adding new players.
-     */
-    private $numberPlayers;
 
     public function __construct()
     {
@@ -104,12 +100,5 @@ class Game
         return $this;
     }
 
-    public function getNumberPlayers(){
-      return $this->numberPlayers;
-    }
-
-    public function setNumberPlayers($num){
-      $this->numberPlayers = $num;
-    }
 
 }

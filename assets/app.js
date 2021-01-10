@@ -13,40 +13,49 @@ import './styles/app.scss';
 import './bootstrap';
 
 
-$(document).on('click', '#add_player_button', function() {
+jQuery(document).ready(function() {
+  // Get the ul that holds the collection of tags
+  var $playersCollectionHolder = $('ul.Players');
+  
+  // count the current form inputs we have (e.g. 2), use that as the new
+  // index when inserting a new item (e.g. 2)
+  $playersCollectionHolder.data('index', $playersCollectionHolder.find('input').length);
 
-
-  // ... retrieve the corresponding form.
-  var $form = $(this).closest('form');
-  // Simulate form data, but only include the selected sport value.
-
-  var data = {}; 
-  var $number_players = $('#game_NumberPlayers');
-  var $num_players_current = $number_players.val();
-  $number_players.val(parseInt($number_players.val()) + 1);
-  var $num_players_next = $number_players.val();
-
-  data[$number_players.attr('name')] = $number_players.val();
-  data['game__token'] = $('#game__token').val();
-  // Submit data via AJAX to the form's action path.
-  $.ajax({
-    url : $form.attr('action'),
-    type: $form.attr('method'),
-    data : data,
-    success: function(html) {
-
-     $('#game_Player' + $num_players_current + 'Section')
-      .after($(html).find('#game_Player' + $num_players_next + 'Section'))
-      .after('<div>Player' + $num_players_next + ' Section</div>');
-
-      if($num_players_next >= 6){
-        $('#add_player_button').hide();
-      }      
-
-    }
-
-
-
-
-  });
+  $('body').on('click', '.add_item_link', function(e) {
+      console.log("CLicking thing");
+      var $collectionHolderClass = $(e.currentTarget).data('collectionHolderClass');
+      // add a new tag form (see next code block)
+      addFormToCollection($collectionHolderClass);
+  })
 });
+
+function addFormToCollection($collectionHolderClass) {
+  console.log("Calling add function");
+  console.log($collectionHolderClass)
+  // Get the ul that holds the collection of tags
+  var $collectionHolder = $('.' + $collectionHolderClass);
+  console.log($collectionHolder); 
+  // Get the data-prototype explained earlier
+  var prototype = $collectionHolder.data('prototype');
+  console.log(prototype);
+  // get the new index
+  var index = $collectionHolder.data('index');
+  console.log(index);
+  var newForm = prototype;
+  // You need this only if you didn't set 'label' => false in your tags field in TaskType
+  // Replace '__name__label__' in the prototype's HTML to
+  // instead be a number based on how many items we have
+  // newForm = newForm.replace(/__name__label__/g, index);
+
+  // Replace '__name__' in the prototype's HTML to
+  // instead be a number based on how many items we have
+  newForm = newForm.replace(/__name__/g, index);
+
+  // increase the index with one for the next item
+  $collectionHolder.data('index', index + 1); 
+
+  // Display the form in the page in an li, before the "Add a tag" link li
+  var $newFormLi = $('<li></li>').append(newForm);
+  // Add the new form at the end of the list
+  $collectionHolder.append($newFormLi)
+}

@@ -36,7 +36,7 @@ class GamePlayer
     private $Deck;
 
     /**
-     * @ORM\Column(type="smallint", nullable=true)
+     * @ORM\Column(type="boolean", nullable=true)
      */
     private $WinningPlayer;
 
@@ -81,12 +81,12 @@ class GamePlayer
         return $this;
     }
 
-    public function getWinningPlayer(): ?int
+    public function getWinningPlayer(): ?bool
     {
         return $this->WinningPlayer;
     }
 
-    public function setWinningPlayer(?int $WinningPlayer): self
+    public function setWinningPlayer(?bool $WinningPlayer): self
     {
         $this->WinningPlayer = $WinningPlayer;
 
