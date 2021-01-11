@@ -27,7 +27,13 @@ class DeckFixtures extends Fixture  implements DependentFixtureInterface
     {
         $deck_details = [
           ["Waiting for Godo","Lee\'s Godo deck. Basically save enough mana to cast Godo and win.", "CEDH","Lee",["Godo"],["Red"]],
-          ["Super Mill","Lee\'s mill deck. Try to get an infinite combo or just attrition", "EDH","Lee",["Phenax"],["Blue", "Black"]]
+          ["Super Mill","Lee\'s mill deck. Try to get an infinite combo or just attrition", "EDH","Lee",["Phenax"],["Blue", "Black"]],
+          ["White Weenies", "Gain life, beef creatures.","EDH","Zane",["Heliod, Sun-Crowned"],["White"]],
+          ["Spies Like Us", "Cast weenies, draw cards", "EDH", "Zane",["Edric"],["Blue", "Green"]],
+          ["Sysmic Swans", "Use lands for kills", "EDH", "Jesse", ["Kynaios"],["Red","Green","White","Blue"]],
+          ["Death Triggers", "Sac Creatuers, double up and do things","EDH","Fed",["Teysa Karlov"],["Black","White"]],
+          ["COVID-19", "Gain Life and plague everthing", "EDH", "Lee", ["Kambal"],["Black", "White"]],
+          ["Cat Party Fast", "Destory lands kill, death by cats", "EDH", "Jesse",["Kaheera","Arahbo"],["White","Green"]]
         ];
 
         $formatRepo = $manager->getRepository(GameFormat::class);

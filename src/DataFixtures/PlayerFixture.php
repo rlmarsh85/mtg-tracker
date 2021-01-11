@@ -14,7 +14,8 @@ class PlayerFixture extends Fixture
         array("Jesse", "Blue Mage"),
         array("Zane", "Mud"),
         array("Mike", "Green Mage"),
-        array("Lee", "BurgerDude")
+        array("Lee", "BurgerDude"),
+        array("Fed", "Fedarino")
       );
       for($i=0; $i < count($players); $i++){
         $player = new Player();

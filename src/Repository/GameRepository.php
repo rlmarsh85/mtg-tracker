@@ -30,6 +30,7 @@ class GameRepository extends ServiceEntityRepository
             LEFT JOIN game_player
             ON game_player.player_id = player.id
             GROUP BY player.id, player.name
+            ORDER BY win_ratio DESC            
             ';
 
         $stmt = $conn->prepare($sql);
@@ -50,6 +51,7 @@ class GameRepository extends ServiceEntityRepository
             LEFT JOIN game_player
             ON game_player.deck_id = deck.id
             GROUP BY deck.id, deck.name
+            ORDER BY win_ratio DESC            
             ';
 
         $stmt = $conn->prepare($sql);
@@ -75,6 +77,7 @@ class GameRepository extends ServiceEntityRepository
             LEFT JOIN color
             ON color.id = decks_colors.color_id
             GROUP BY color.id, color.name
+            ORDER BY win_ratio DESC
             ';
 
         $stmt = $conn->prepare($sql);
