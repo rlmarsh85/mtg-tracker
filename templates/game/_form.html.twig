@@ -10,16 +10,12 @@
 
     <div id = "players_section">
 
-        <ul class="players">
-            {% for player in form.GamePlayers %}
-                <li>{{ form(player) }}</li>
-            {% endfor %}
-        </ul>
+        <ul class="GamePlayers" data-prototype="{{ form_widget(form.GamePlayers.vars.prototype)|e('html_attr') }}"></ul>
+        <button type="button" class="add_item_link" data-collection-holder-class="GamePlayers">Add Player</button>
       
 
     </div>
-    <ul class="GamePlayers" data-prototype="{{ form_widget(form.GamePlayers.vars.prototype)|e('html_attr') }}"></ul>
-    <button type="button" class="add_item_link" data-collection-holder-class="GamePlayers">Add Player</button>
+
 
     <button class="btn">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}
