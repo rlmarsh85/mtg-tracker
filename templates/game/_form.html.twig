@@ -10,7 +10,11 @@
 
     <div id = "players_section">
 
-
+        <ul class="players">
+            {% for player in form.GamePlayers %}
+                <li>{{ form(player) }}</li>
+            {% endfor %}
+        </ul>
       
 
     </div>

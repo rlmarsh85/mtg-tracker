@@ -15,7 +15,7 @@ import './bootstrap';
 
 jQuery(document).ready(function() {
   // Get the ul that holds the collection of tags
-  var $playersCollectionHolder = $('ul.Players');
+  var $playersCollectionHolder = $('ul.GamePlayers');
   
   // count the current form inputs we have (e.g. 2), use that as the new
   // index when inserting a new item (e.g. 2)
@@ -40,6 +40,9 @@ function addFormToCollection($collectionHolderClass) {
   console.log(prototype);
   // get the new index
   var index = $collectionHolder.data('index');
+  if(!index){
+    index = 0; 
+  }
   console.log(index);
   var newForm = prototype;
   // You need this only if you didn't set 'label' => false in your tags field in TaskType
