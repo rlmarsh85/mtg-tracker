@@ -37,18 +37,7 @@ class GameType extends AbstractType
         $builder
             ->add('PlayDate')
             ->add('Format')
-            ->add('NumberTurns')
-
-            
-            /*
-            ->add('GamePlayers', CollectionType::class, [
-              'entry_type' => GamePlayerType::class,       
-              'entry_options' => ['label' => false],
-              'allow_add' => true,
-              'by_reference' => false,                                              
-            ]);
-            */
-            
+            ->add('NumberTurns')          
             ->add('GamePlayers', CollectionType::class, [
                 'entry_type'   => GamePlayerType::class,
                 'label'        => 'List players.',
@@ -59,7 +48,7 @@ class GameType extends AbstractType
                 'by_reference' => false,
                 'delete_empty' => true,
                 'attr'         => [
-                    'class' => 'blorg',
+                    'class' => 'players-collection',
                 ],
             ]
         );

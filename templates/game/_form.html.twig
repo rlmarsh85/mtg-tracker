@@ -1,18 +1,11 @@
 {% extends 'base.html.twig' %}
 
 {% block extra_js %}
-    <script src="{{ asset('jquery.collection.js') }}"></script>
+        {{ encore_entry_link_tags('jquery.collections') }}
+        {{ encore_entry_script_tags('jquery.collections') }}   
 {% endblock %}
 
-{% block title %}Advanced usage: custom theme and several fields{% endblock %}
-
 {% block body %}
-
-    <h2>{{ block('title') }}</h2>
-
-    <p>
-        An example that shows how works theming on a form with more than one field.
-    </p>
 
     <div class="row">
         {%
@@ -29,7 +22,7 @@
 
     <script type="text/javascript">
         jQuery(document).ready(function() {
-            $('.blorg').collection({
+            $('.players-collection').collection({
                 'drag_drop_options': {
                     'placeholder': null
                 }

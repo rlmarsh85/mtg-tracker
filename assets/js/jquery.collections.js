@@ -16,7 +16,7 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-;
+
 (function ($) {
 
     $.fn.collection = function (options) {
@@ -1004,5 +1004,5 @@
         return true;
     }; // $.fn.collection
 
-})
+}) 
 (jQuery);
