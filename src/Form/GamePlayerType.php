@@ -42,4 +42,10 @@ class GamePlayerType extends AbstractType
             'data_class' => GamePlayer::class,
         ]);
     }
+
+    public function getBlockPrefix()
+    {
+        return 'GamePlayerType';
+    }
+
 }

@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block extra_js %}
-    <script src="{{ asset('jquery.collection.js') }}"></script>
+    <script src="{{ asset('js/jquery.collection.js') }}"></script>
 {% endblock %}
 
 {% block title %}Advanced usage: custom theme and several fields{% endblock %}
@@ -18,22 +18,27 @@
         {%
             form_theme form
                 'jquery.collection.html.twig'
-                'gameplayers-theme.html.twig'
+                'FuzAppBundle:Advanced:addresses-theme.html.twig'
         %}
         {{ form(form) }}
     </div>
 
+    {% for player in data.GamePlayers %}
+        <p>
+        </p>
+    {% endfor %}
+
+
+
 {% endblock %}
 
-{% block javascripts %}
+{% block script %}
 
     <script type="text/javascript">
-        jQuery(document).ready(function() {
-            $('.blorg').collection({
-                'drag_drop_options': {
-                    'placeholder': null
-                }
-            });
+        $('.collection').collection({
+            'drag_drop_options': {
+                'placeholder': null
+            }
         });
     </script>
 

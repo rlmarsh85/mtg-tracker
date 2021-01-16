@@ -44,8 +44,12 @@ class GameController extends AbstractController
      */
     public function new(Request $request): Response
     {
-        $this->logger->error("Calling new function");
+        $gamePlayer = new GamePlayer();
+
         $game = new Game();
+        $gamePlayer->setGame($game);
+        $game->getGamePlayers()->add($gamePlayer);
+        
         $form = $this->createForm(GameType::class, $game);
         $form->handleRequest($request);
         $isAjax = $request->request->get("isAjax");

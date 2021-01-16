@@ -11,12 +11,15 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Psr\Log\LoggerInterface;
 
+
 use App\Form\GamePlayerType;
+use App\Entity\GamePlayer;
 
 
 
@@ -29,18 +32,43 @@ class GameType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
 
+
+
         $builder
             ->add('PlayDate')
             ->add('Format')
             ->add('NumberTurns')
+
+            
+            /*
             ->add('GamePlayers', CollectionType::class, [
               'entry_type' => GamePlayerType::class,       
               'entry_options' => ['label' => false],
               'allow_add' => true,
               'by_reference' => false,                                              
             ]);
+            */
+            
+            ->add('GamePlayers', CollectionType::class, [
+                'entry_type'   => GamePlayerType::class,
+                'label'        => 'List players.',
+                'allow_add'    => true,
+                'allow_delete' => true,
+                'prototype'    => true,
+                'required'     => false,
+                'by_reference' => false,
+                'delete_empty' => true,
+                'attr'         => [
+                    'class' => 'blorg',
+                ],
+            ]
+        );
 
-          ;
+        $builder->add('save', SubmitType::class, [
+            'label' => 'Save Game',
+        ]);        
+        
+        
 
 
     }
@@ -56,5 +84,10 @@ class GameType extends AbstractType
     {
         $this->logger = $logger;
     }
+
+    public function getBlockPrefix()
+    {
+        return 'GameType';
+    }    
 
 }

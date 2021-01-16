@@ -12,7 +12,7 @@ import './styles/app.scss';
 // start the Stimulus application
 import './bootstrap';
 
-
+/*
 jQuery(document).ready(function() {
   // Get the ul that holds the collection of tags
   var $playersCollectionHolder = $('ul.GamePlayers');
@@ -62,3 +62,4 @@ function addFormToCollection($collectionHolderClass) {
   // Add the new form at the end of the list
   $collectionHolder.append($newFormLi)
 }
+*/
