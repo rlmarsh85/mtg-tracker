@@ -25,12 +25,14 @@ class StatsController extends AbstractController
 
         $gameRepo = $entityManager->getRepository(Game::class);     
         $player_ranks = $gameRepo->findPlayerRanks();
+        $player_overall_ranks = $gameRepo->findPlayerOverallRank();
         $deck_ranks = $gameRepo->findDeckRanks();
         $color_ranks = $gameRepo->findColorRanks();
         $total_games = $gameRepo->findTotalNumberGames();
 
         return $this->render('stats/index.html.twig', [
             'player_ranks' => $player_ranks,
+            'player_overall_ranks' => $player_overall_ranks,
             'deck_ranks' => $deck_ranks,
             'color_ranks' => $color_ranks,
             'total_games' => $total_games

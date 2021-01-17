@@ -30,6 +30,7 @@ class GameRepository extends ServiceEntityRepository
             LEFT JOIN game_player
             ON game_player.player_id = player.id
             GROUP BY player.id, player.name
+            HAVING `num_wins` > 0
             ORDER BY win_ratio DESC            
             ';
 
@@ -39,6 +40,32 @@ class GameRepository extends ServiceEntityRepository
         // returns an array of arrays (i.e. a raw data set)
         return $stmt->fetchAllAssociative();
     }
+
+
+    public function findPlayerOverallRank(): array
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = '
+            SELECT 
+            player.id, player.name, SUM(winning_player) `num_wins`,
+            ROUND(( SUM(winning_player) / total_games.c * 100  ),2) `win_ratio`
+            FROM player
+            LEFT JOIN game_player
+            ON game_player.player_id = player.id
+            LEFT JOIN 
+                (SELECT COUNT(id) c FROM game_player WHERE winning_player = 1) total_games ON 1 = 1
+            GROUP BY player.id, player.name
+            HAVING `num_wins` > 0
+            ORDER BY win_ratio DESC            
+            ';
+
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+
+        // returns an array of arrays (i.e. a raw data set)
+        return $stmt->fetchAllAssociative();
+    }    
     
     public function findDeckRanks(): array
     {

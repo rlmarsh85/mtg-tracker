@@ -1,7 +1,18 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Game Stats{% endblock %}
+{% block extra_js %}
 
+    <script>
+        //var data = {a: 9, b: 20, c:30, d:8, e:12}
+        var player_data = { {% for rank in player_overall_ranks %}{{rank.name}}:{{rank.win_ratio}},{% endfor %} }
+        var total_games = {{total_games}}    
+        console.log(player_data)
+    </script>
+    {{ encore_entry_script_tags('stats') }}
+
+
+{% endblock %}
 {% block body %}
     <h1>Game Stats</h1>
 
@@ -84,5 +95,5 @@
     </table>
 
     <p>Total games: {{total_games}}</p>    
-
+    <div id="placeholder"></div>
 {% endblock %}
