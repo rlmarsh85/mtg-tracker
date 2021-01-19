@@ -7,8 +7,8 @@
         //var data = {a: 9, b: 20, c:30, d:8, e:12}
         //var player_data = { {% for rank in player_overall_ranks %}{{rank.name}}:{{rank.win_ratio}},{% endfor %} }
         var player_data = { {% for rank in player_overall_ranks %}{{rank.name}}:{"WinRatio":{{rank.win_ratio}},"NumWins":{{rank.num_wins}}},{% endfor %} }
+        var color_data = { {% for rank in color_ranks %}{{rank.name}}:{"WinRatio":{{rank.win_ratio}},"NumWins":{{rank.num_wins}}},{% endfor %} }
 
-        console.log(player_data)
     </script>
 
     {{ encore_entry_script_tags('stats') }}
@@ -96,6 +96,8 @@
 
     </table>
 
-    <p>Total games: {{total_games}}</p>    
+    <p>Total games: {{total_games}}</p> 
+    <button id ="data1_btn">Data 1</button>   
+    <button id ="data2_btn">Data 2</button>   
     <div id="placeholder"></div>
 {% endblock %}

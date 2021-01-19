@@ -95,7 +95,7 @@ class GameRepository extends ServiceEntityRepository
         $sql = '
             SELECT 
             color.id, color.name, COUNT(game_id) `num_games`, SUM(winning_player) `num_wins`, 
-            ROUND(( SUM(winning_player) / COUNT(game_id) * 100  ),2) `win_ratio`
+            ROUND(( SUM(winning_player) / total_games.c * 100  ),2) `win_ratio`
             FROM deck
             LEFT JOIN game_player
             ON game_player.deck_id = deck.id
@@ -103,6 +103,8 @@ class GameRepository extends ServiceEntityRepository
             ON decks_colors.deck_id = deck.id
             LEFT JOIN color
             ON color.id = decks_colors.color_id
+            LEFT JOIN 
+                (SELECT COUNT(id) c FROM game_player WHERE winning_player = 1) total_games ON 1 = 1            
             GROUP BY color.id, color.name
             ORDER BY win_ratio DESC
             ';
