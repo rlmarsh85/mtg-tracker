@@ -12,7 +12,7 @@ jQuery(document).ready(function() {
     var margin = 40;  
 
 
-    var svg = d3.select("#placeholder")
+    var pie_svg = d3.select("#pie_chart_placeholder")
     .append("svg")
     .attr("width", width + 200)
     .attr("height", height)
@@ -20,15 +20,85 @@ jQuery(document).ready(function() {
     .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
     
+    var bar_svg = d3.select("#bar_chart_placeholder");
 
-    update(player_data,svg)
 
-    $('#data1_btn').on('click', function(){ update(player_data,svg) });
-    $('#data2_btn').on('click', function(){ update(color_data,svg) });
+
+    
+
+    updatePieChart(player_data,bar_svg);
+
+    $('#data1_btn').on('click', function(){ updatePieChart(player_data,pie_svg) });
+    $('#data2_btn').on('click', function(){ updatePieChart(color_data,pie_svg) });
 
 });
 
-function update(data,svg) {
+function updateBarChart(player_data,svg){
+  var margin = { top: 20, right: 20, bottom: 30, left: 40 },
+  x = d3.scaleBand().padding(0.1),
+  y = d3.scaleLinear();
+  var data = player_data;
+
+  var g = svg.append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");  
+
+  g.append("g")
+  .attr("class", "axis axis--x");
+
+  g.append("g")
+    .attr("class", "axis axis--y");
+
+  g.append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("y", 6)
+    .attr("dy", "0.71em")
+    .attr("text-anchor", "end")
+    .text("Frequency");
+    
+  var bounds = svg.node().getBoundingClientRect(),
+    width = bounds.width - margin.left - margin.right,
+    height = bounds.height - margin.top - margin.bottom;
+
+  x.rangeRound([0, width]);
+  y.rangeRound([height, 0]);
+
+  x.domain(data.map(function (d) { return d.letter; }));
+  y.domain([0, d3.max(data, function (d) { return d.frequency; })]);    
+  
+  g.select(".axis--x")
+  .attr("transform", "translate(0," + height + ")")
+  .call(d3.axisBottom(x));
+
+  g.select(".axis--y")
+    .call(d3.axisLeft(y).ticks(10, "%"));
+
+  var bars = g.selectAll(".bar")
+    .data(data);
+    
+  // ENTER    
+  bars
+    .enter().append("rect")
+    .attr("class", "bar")
+    .attr("x", function (d) { return x(d.letter); })
+    .attr("y", function (d) { return y(d.frequency); })
+    .attr("width", x.bandwidth())
+    .attr("height", function (d) { return height - y(d.frequency); });
+    
+  // UPDATE
+  bars.attr("x", function (d) { return x(d.letter); })
+    .attr("y", function (d) { return y(d.frequency); })
+    .attr("width", x.bandwidth())
+    .attr("height", function (d) { return height - y(d.frequency); });    
+
+  // EXIT
+  bars.exit()
+    .remove();
+
+  
+
+}
+
+function updatePieChart(data,svg) {
   
   // set the dimensions and margins of the graph
   var width = 450;
