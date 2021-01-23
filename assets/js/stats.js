@@ -1,7 +1,14 @@
 var d3 = require('d3');
 var d3legend = require('d3-svg-legend');
 
-
+function resolveColor(name){
+  name = name.toLowerCase();
+  if(name == "red" || name == "blue" || name == "black" || name == "green" || name == "white"){
+    return name;
+  }
+  
+  return "";
+}
 
 jQuery(document).ready(function() {
 
@@ -11,7 +18,7 @@ jQuery(document).ready(function() {
     var height = 450;
     var margin = 40;  
 
-    /*
+    
     var pie_svg = d3.select("#pie_chart_placeholder")
     .append("svg")
     .attr("width", width + 200)
@@ -20,7 +27,7 @@ jQuery(document).ready(function() {
     .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
     updatePieChart(player_data,pie_svg)
-    */
+    
     
 
     
@@ -95,7 +102,7 @@ function updateBarChart(data,svg){
 
   bars
     .enter().append("rect")
-    .attr("class", "bar")
+    .attr("class", function(d){ var color=resolveColor(d.Name); return  color + " bar"})
     .attr("x", function (d) { return x(d.Name); })
     .attr("y", function (d) { return y(d.WinRatio); })
     .attr("width", x.bandwidth())
@@ -164,6 +171,7 @@ function updatePieChart(data,svg) {
       .outerRadius(radius)
     )
     .attr('fill', function(d){ return(color(d.data.key)) })
+    .attr('class', function(d){ return "pie-slice " + resolveColor(d.data.key); } )
     .attr("stroke", "white")
     .style("stroke-width", "2px")
     .style("opacity", 0.8)
@@ -219,15 +227,20 @@ function updatePieChart(data,svg) {
   var legendOrdinal = d3legend.legendColor()
   //.shape("path", d3.symbol().type(d3.symbolSquare).size(150)())
   .shapePadding(10)
-  .scale(ordinal)
+  .scale(ordinal);
 
   svg.select(".legendOrdinal")
   .call(legendOrdinal);
+
+  var lol = svg.select(".legendOrdinal").selectAll(".swatch")
+  .attr("class", function(d){ return "swatch " + resolveColor(d)} );  
+
 
 
   svg.select("rect")
   .attr("height", (svg.select("g").node().getBBox().height + 20))
   .attr("width", (svg.select("g").node().getBBox().width + 20))
   .attr("style", "outline: thin solid black;fill:white")
+  ;
   
 }

@@ -8,3 +8,41 @@ body {
 
 // the ~ allows you to reference things in node_modules
 @import "~bootstrap/scss/bootstrap";
+
+
+text {
+  font-family: sans-serif;
+}
+
+.bar {
+  fill: cornflowerblue;
+}
+
+.bar:hover {
+  fill: pink;
+}
+
+.axis--x path {
+  display: none;
+}
+
+
+.red{
+  fill:#ff3300 !important;
+}
+
+.green{
+  fill:#79f304 !important;
+}
+
+.blue{
+  fill:#0936fb !important;
+}
+
+.black{
+  fill:#303134 !important;
+}
+
+.white{
+  fill:#cfd1db !important;
+}
