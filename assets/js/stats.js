@@ -11,7 +11,7 @@ jQuery(document).ready(function() {
     var height = 450;
     var margin = 40;  
 
-
+    /*
     var pie_svg = d3.select("#pie_chart_placeholder")
     .append("svg")
     .attr("width", width + 200)
@@ -19,28 +19,45 @@ jQuery(document).ready(function() {
     .append("g")
     .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
-    
-    var bar_svg = d3.select("#bar_chart_placeholder");
-
-
-
+    updatePieChart(player_data,pie_svg)
+    */
     
 
-    updatePieChart(player_data,bar_svg);
+    
+    var bar_svg = d3.select("#bar_chart_placeholder")
+    .append("svg")
+    .attr("width", width + 200)
+    .attr("height", height)
+    .append("g")
+    //.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+    updateBarChart(player_data,bar_svg); 
+
 
     $('#data1_btn').on('click', function(){ updatePieChart(player_data,pie_svg) });
     $('#data2_btn').on('click', function(){ updatePieChart(color_data,pie_svg) });
 
+    $('#bar_data1_btn').on('click', function(){ updateBarChart(player_data,bar_svg) });
+    $('#bar_data2_btn').on('click', function(){ updateBarChart(color_data,bar_svg) });    
+
 });
 
-function updateBarChart(player_data,svg){
-  var margin = { top: 20, right: 20, bottom: 30, left: 40 },
-  x = d3.scaleBand().padding(0.1),
-  y = d3.scaleLinear();
-  var data = player_data;
+function updateBarChart(data,svg){
+
+  var width = 450;
+  var height = 400;
+  var margin = { top: 20, right: 20, bottom: 30, left: 40 };   
+
+  console.log(data);
+
+  svg.selectAll("*").remove();
+  
+  var x = d3.scaleBand().padding(0.1),
+  y = d3.scaleLinear();  
 
   var g = svg.append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");  
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    
 
   g.append("g")
   .attr("class", "axis axis--x");
@@ -53,42 +70,43 @@ function updateBarChart(player_data,svg){
     .attr("y", 6)
     .attr("dy", "0.71em")
     .attr("text-anchor", "end")
-    .text("Frequency");
-    
-  var bounds = svg.node().getBoundingClientRect(),
-    width = bounds.width - margin.left - margin.right,
-    height = bounds.height - margin.top - margin.bottom;
+    .text("Win Ratio");
 
-  x.rangeRound([0, width]);
+
+  x.rangeRound([15, width]);
   y.rangeRound([height, 0]);
 
-  x.domain(data.map(function (d) { return d.letter; }));
-  y.domain([0, d3.max(data, function (d) { return d.frequency; })]);    
-  
+  x.domain(Object.values(data).map(function(item) { return item.Name; } ));
+
   g.select(".axis--x")
   .attr("transform", "translate(0," + height + ")")
   .call(d3.axisBottom(x));
 
   g.select(".axis--y")
-    .call(d3.axisLeft(y).ticks(10, "%"));
+    .call(d3.axisLeft(y).ticks(20, "%"));
+
+  y.domain([0, 100]);
 
   var bars = g.selectAll(".bar")
-    .data(data);
+    .data(Object.values(data));
     
   // ENTER    
+
+
   bars
     .enter().append("rect")
     .attr("class", "bar")
-    .attr("x", function (d) { return x(d.letter); })
-    .attr("y", function (d) { return y(d.frequency); })
+    .attr("x", function (d) { return x(d.Name); })
+    .attr("y", function (d) { return y(d.WinRatio); })
     .attr("width", x.bandwidth())
-    .attr("height", function (d) { return height - y(d.frequency); });
+    .attr("height", function (d) { return height - y(d.WinRatio); })
     
   // UPDATE
-  bars.attr("x", function (d) { return x(d.letter); })
-    .attr("y", function (d) { return y(d.frequency); })
+  bars
+    .attr("x", function (d) { return x(d.Name); })
+    .attr("y", function (d) { return y(d.WinRatio); })
     .attr("width", x.bandwidth())
-    .attr("height", function (d) { return height - y(d.frequency); });    
+    .attr("height", function (d) { return height - y(d.WinRatio); })
 
   // EXIT
   bars.exit()
@@ -155,19 +173,6 @@ function updatePieChart(data,svg) {
     .exit()
     .remove()
 
-  // Build the pie chart: Basically, each part of the pie is a path that we build using the arc function.
-/*
-  svg
-  .selectAll('whatever')
-  .data(data_ready)
-  .enter()
-  .append('path')
-    .attr('d', arcGenerator)
-    .attr('fill', function(d){ return(color(d.data.key)) })
-    .attr("stroke", "black")
-    .style("stroke-width", "2px")
-    .style("opacity", 0.8)
-*/
   svg
   .selectAll('whatever')
   .data(data_ready)
