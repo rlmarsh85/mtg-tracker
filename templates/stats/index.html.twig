@@ -5,7 +5,8 @@
 
     <script>
         //var data = {a: 9, b: 20, c:30, d:8, e:12}        
-        var player_data = { {% for rank in player_overall_ranks %}{{rank.name}}:{"Name":"{{rank.name}}","WinRatio":{{rank.win_ratio}},"NumWins":{{rank.num_wins}}},{% endfor %} }
+        var player_data = { {% for rank in player_ranks %}{{rank.name}}:{"Name":"{{rank.name}}","WinRatio":{{rank.win_ratio}},"NumWins":{{rank.num_wins}},"NumGames":{{rank.num_games}} },{% endfor %} }
+        var player_overall_data = { {% for rank in player_overall_ranks %}{{rank.name}}:{"Name":"{{rank.name}}","WinRatio":{{rank.win_ratio}},"NumWins":{{rank.num_wins}}},{% endfor %} }
         var color_data = { {% for rank in color_ranks %}{{rank.name}}:{"Name":"{{rank.name}}","WinRatio":{{rank.win_ratio}},"NumWins":{{rank.num_wins}}},{% endfor %} }
 
     </script>

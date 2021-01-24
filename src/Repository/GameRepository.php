@@ -19,6 +19,9 @@ class GameRepository extends ServiceEntityRepository
         parent::__construct($registry, Game::class);
     }
 
+    /**
+     * Gets each players win rate, i.e. percent of games won of all games which that player played in
+     */
     public function findPlayerRanks(): array
     {
         $conn = $this->getEntityManager()->getConnection();
@@ -42,6 +45,9 @@ class GameRepository extends ServiceEntityRepository
     }
 
 
+    /**
+     * Gets player's overall win rate, i.e. percent of games won out of all games played
+     */
     public function findPlayerOverallRank(): array
     {
         $conn = $this->getEntityManager()->getConnection();

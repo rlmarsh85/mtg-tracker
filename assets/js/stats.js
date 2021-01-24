@@ -15,7 +15,7 @@ jQuery(document).ready(function() {
 
     // set the dimensions and margins of the graph
     var width = 450;
-    var height = 450;
+    var height = 550;
     var margin = 40;  
 
     /**
@@ -33,7 +33,7 @@ jQuery(document).ready(function() {
     .attr("class", "tooltip-pie")
     .style("opacity", 0);      
         
-    updatePieChart(player_data, pie_svg, pie_div, $('#data1_btn').text() );
+    updatePieChart(player_overall_data, pie_svg, pie_div, $('#pie-wins-by-player').text() );
 
 
     /**
@@ -50,14 +50,14 @@ jQuery(document).ready(function() {
     .attr("class", "tooltip-bars")
     .style("opacity", 0);    
 
-    updateBarChart(player_data, bar_svg, bar_div, $('#bar_data1_btn').text() ); 
+    updateBarChart(player_data, bar_svg, bar_div, $('#bar-win-rate-player').text() ); 
 
 
     /**
      * 
      * Setup button events
      */
-    $('#pie-wins-by-player').on('click', function(){ updatePieChart(player_data, pie_svg, pie_div, this.innerHTML ) });
+    $('#pie-wins-by-player').on('click', function(){ updatePieChart(player_overall_data, pie_svg, pie_div, this.innerHTML ) });
     $('#pie-wins-by-color').on('click', function(){ updatePieChart(color_data, pie_svg, pie_div, this.innerHTML ) });
 
     $('#bar-win-rate-player').on('click', function(){ updateBarChart(player_data, bar_svg, bar_div, this.innerHTML ) });
@@ -68,7 +68,7 @@ jQuery(document).ready(function() {
 function updateBarChart(data, svg, float_div, title){
 
   var width = 450;
-  var height = 400;
+  var height = 450;
   var margin = { top: 20, right: 20, bottom: 30, left: 40 };   
   var dataTableClassName = "bar-chart-table"
 
