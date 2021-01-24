@@ -55,8 +55,6 @@ function updateBarChart(data,svg){
   var height = 400;
   var margin = { top: 20, right: 20, bottom: 30, left: 40 };   
 
-  console.log(data);
-
   svg.selectAll("*").remove();
   
   var x = d3.scaleBand().padding(0.1),
@@ -107,19 +105,7 @@ function updateBarChart(data,svg){
     .attr("y", function (d) { return y(d.WinRatio); })
     .attr("width", x.bandwidth())
     .attr("height", function (d) { return height - y(d.WinRatio); })
-    
-  // UPDATE
-  bars
-    .attr("x", function (d) { return x(d.Name); })
-    .attr("y", function (d) { return y(d.WinRatio); })
-    .attr("width", x.bandwidth())
-    .attr("height", function (d) { return height - y(d.WinRatio); })
 
-  // EXIT
-  bars.exit()
-    .remove();
-
-  
 
 }
 
@@ -225,14 +211,14 @@ function updatePieChart(data,svg) {
   
   
   var legendOrdinal = d3legend.legendColor()
-  //.shape("path", d3.symbol().type(d3.symbolSquare).size(150)())
+  .shape("path", d3.symbol().type(d3.symbolSquare).size(150)())
   .shapePadding(10)
   .scale(ordinal);
 
   svg.select(".legendOrdinal")
   .call(legendOrdinal);
 
-  var lol = svg.select(".legendOrdinal").selectAll(".swatch")
+  svg.select(".legendOrdinal").selectAll(".swatch")
   .attr("class", function(d){ return "swatch " + resolveColor(d)} );  
 
 
