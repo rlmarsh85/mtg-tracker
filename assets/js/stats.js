@@ -30,7 +30,7 @@ jQuery(document).ready(function() {
     
     
 
-    
+    /*
     var bar_svg = d3.select("#bar_chart_placeholder")
     .append("svg")
     .attr("width", width + 200)
@@ -39,7 +39,7 @@ jQuery(document).ready(function() {
     //.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
     updateBarChart(player_data,bar_svg); 
-
+*/
 
     $('#data1_btn').on('click', function(){ updatePieChart(player_data,pie_svg) });
     $('#data2_btn').on('click', function(){ updatePieChart(color_data,pie_svg) });
@@ -119,8 +119,6 @@ function updateBarChart(data,svg){
            .duration(50)
            .style("opacity", 1);
 
-           
-           console.log(num);
            div.html(num)
            .style("left", (d3.event.pageX + 10) + "px")
            .style("top", (d3.event.pageY - 15) + "px");           
@@ -173,6 +171,7 @@ function updatePieChart(data,svg) {
 
   svg.selectAll('text').remove();
   svg.select(".legendOrdinal").remove();
+  d3.selectAll('.pie-chart-table').remove();
 
   // Build the pie chart: Basically, each part of the pie is a path that we build using the arc function.
   u
@@ -257,5 +256,66 @@ function updatePieChart(data,svg) {
   .attr("width", (svg.select("g").node().getBBox().width + 20))
   .attr("style", "outline: thin solid black;fill:white")
   ;
+
+  var showDataButton = d3.select("#pie_chart_placeholder").append("div")
+      .html("Show Raw Data")
+      .on('click', function(d,i){
+        d3.select('.pie-chart-table')
+          .style('display', 'block')
+      });
+
+  var showDataButton = d3.select("#pie_chart_placeholder").append("div")
+      .html("Hide Raw Data")
+      .on('click', function(d,i){
+        d3.select('.pie-chart-table')
+        .style('display', 'none')
+      });      
+  
+
+
+  var table = d3.select("#pie_chart_placeholder").append('table').attr('class','pie-chart-table');
+  var titles = Object.keys(data[Object.keys(data)[0]]);
+
+  console.log(titles);
+
+  var headers = table.append('thead').append('tr')
+    .selectAll('th')
+    .data(titles).enter()
+    .append('th')
+    .text(function (d) {
+      console.log(d);
+      return d;
+    })
+    .on('click', function (d) {
+      headers.attr('class', 'header');
+      if (sortAscending) {
+        rows.sort(function(a, b) { return b[d] < a[d]; });
+        sortAscending = false;
+        this.className = 'aes';        
+      }else{
+        rows.sort(function(a, b) { return b[d] > a[d]; });
+        sortAscending = true;
+        this.className = 'des';        
+      }
+      
+    });
+
+    var rows = table.append('tbody').selectAll('tr')
+    .data(Object.values(data)).enter()
+    .append('tr');
+
+    rows.selectAll('td')
+    .data(function (d) {
+      return titles.map(function (k) {
+        return { 'value': d[k], 'name': k};
+      });      
+    }).enter()
+    .append('td')
+    .attr('data-th', function (d) {
+      return d.name;
+    })
+    .text(function (d) {
+      return d.value;
+    });          
   
 }
