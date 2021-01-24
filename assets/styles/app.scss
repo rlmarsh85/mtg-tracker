@@ -18,10 +18,6 @@ text {
   fill: cornflowerblue;
 }
 
-.bar:hover {
-  fill: pink;
-}
-
 .axis--x path {
   display: none;
 }
@@ -45,4 +41,16 @@ text {
 
 .white{
   fill:#cfd1db !important;
+}
+
+div.tooltip-bars {
+  position: absolute;
+  text-align: center;
+  padding: 2px;
+  background: #FFFFFF;
+  color: #313639;
+  border: 1px solid #313639;
+  border-radius: 8px;
+  pointer-events: none;
+  font-size: 12px;
 }
