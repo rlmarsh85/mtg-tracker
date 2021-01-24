@@ -48,7 +48,7 @@ class GameRepository extends ServiceEntityRepository
     /**
      * Gets player's overall win rate, i.e. percent of games won out of all games played
      */
-    public function findPlayerOverallRank(): array
+    public function findPlayerOverallRanks(): array
     {
         $conn = $this->getEntityManager()->getConnection();
 
@@ -73,6 +73,9 @@ class GameRepository extends ServiceEntityRepository
         return $stmt->fetchAllAssociative();
     }    
     
+    /**
+     * Gets the win rate of each deck, i.e. percent of games won of all games which that deck was played
+     */
     public function findDeckRanks(): array
     {
         $conn = $this->getEntityManager()->getConnection();
@@ -84,7 +87,9 @@ class GameRepository extends ServiceEntityRepository
             LEFT JOIN game_player
             ON game_player.deck_id = deck.id
             GROUP BY deck.id, deck.name
+            HAVING num_wins > 0
             ORDER BY win_ratio DESC            
+            LIMIT 5
             ';
 
         $stmt = $conn->prepare($sql);
@@ -93,6 +98,31 @@ class GameRepository extends ServiceEntityRepository
         // returns an array of arrays (i.e. a raw data set)
         return $stmt->fetchAllAssociative();
     }
+
+    public function findDeckOverallRanks(): array
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = '
+            SELECT deck.id, deck.name, COUNT(game_id) `num_games`, SUM(winning_player) `num_wins`, 
+            ROUND(( SUM(winning_player) / total_games.c * 100  ),2) `win_ratio`
+            FROM deck
+            LEFT JOIN game_player
+            ON game_player.deck_id = deck.id
+            LEFT JOIN 
+                (SELECT COUNT(id) c FROM game_player WHERE winning_player = 1) total_games ON 1 = 1            
+            GROUP BY deck.id, deck.name
+            HAVING num_wins > 0
+            ORDER BY win_ratio DESC 
+            LIMIT 5          
+            ';
+
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+
+        // returns an array of arrays (i.e. a raw data set)
+        return $stmt->fetchAllAssociative();
+    }    
     
     public function findColorRanks(): array
     {

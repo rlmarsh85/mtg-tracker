@@ -5,8 +5,13 @@
 
     <script>
         //var data = {a: 9, b: 20, c:30, d:8, e:12}        
+
         var player_data = { {% for rank in player_ranks %}{{rank.name}}:{"Name":"{{rank.name}}","WinRatio":{{rank.win_ratio}},"NumWins":{{rank.num_wins}},"NumGames":{{rank.num_games}} },{% endfor %} }
         var player_overall_data = { {% for rank in player_overall_ranks %}{{rank.name}}:{"Name":"{{rank.name}}","WinRatio":{{rank.win_ratio}},"NumWins":{{rank.num_wins}}},{% endfor %} }
+
+        var deck_data = { {% for rank in deck_ranks %}"{{rank.name}}":{"Name":"{{rank.name}}","WinRatio":{{rank.win_ratio}},"NumWins":{{rank.num_wins}},"NumGames":{{rank.num_games}} },{% endfor %} }
+        var deck_overall_data = { {% for rank in deck_overall_ranks %}"{{rank.name}}":{"Name":"{{rank.name}}","WinRatio":{{rank.win_ratio}},"NumWins":{{rank.num_wins}}},{% endfor %} }
+
         var color_data = { {% for rank in color_ranks %}{{rank.name}}:{"Name":"{{rank.name}}","WinRatio":{{rank.win_ratio}},"NumWins":{{rank.num_wins}}},{% endfor %} }
 
     </script>
@@ -61,6 +66,7 @@
         <div class = "graph-btns">
             <button id ="pie-wins-by-player">Total Games Won by Player</button>   
             <button id ="pie-wins-by-color">Total Games Won by Color</button>
+            <button id ="pie-wins-by-deck">Total Games Won by Deck</button>
         </div>
         <div id="pie_chart_placeholder" ></div>
     </div>
@@ -68,6 +74,7 @@
         <div class = "graph-btns">
             <button id ="bar-win-rate-player">Win Rate by Player</button>   
             <button id ="bar-win-rate-color">Win Rate by Color</button>    
+            <button id ="bar-win-rate-deck">Win Rate by Deck</button>
         </div>
         <div id="bar_chart_placeholder"></div>
     </div>

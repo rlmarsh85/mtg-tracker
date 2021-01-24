@@ -24,9 +24,13 @@ class StatsController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
 
         $gameRepo = $entityManager->getRepository(Game::class);     
+
         $player_ranks = $gameRepo->findPlayerRanks();
-        $player_overall_ranks = $gameRepo->findPlayerOverallRank();
+        $player_overall_ranks = $gameRepo->findPlayerOverallRanks();
+
         $deck_ranks = $gameRepo->findDeckRanks();
+        $deck_overall_ranks = $gameRepo->findDeckOverallRanks();
+
         $color_ranks = $gameRepo->findColorRanks();
         $total_games = $gameRepo->findTotalNumberGames();
         $avg_game_length = $gameRepo->findAverageGameLength();
@@ -37,6 +41,7 @@ class StatsController extends AbstractController
             'player_ranks' => $player_ranks,
             'player_overall_ranks' => $player_overall_ranks,
             'deck_ranks' => $deck_ranks,
+            'deck_overall_ranks' => $deck_overall_ranks,
             'color_ranks' => $color_ranks,
             'total_games' => $total_games,
             'avg_game_length' => $avg_game_length,
