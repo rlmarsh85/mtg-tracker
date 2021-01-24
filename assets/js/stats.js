@@ -26,8 +26,13 @@ jQuery(document).ready(function() {
     .append("g")
     .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
-    updatePieChart(player_data,pie_svg)
-    
+    var pie_div = d3.select("body").append("div")
+    .attr("class", "tooltip-pie")
+    .style("opacity", 0);      
+        
+    updatePieChart(player_data, pie_svg, pie_div)
+
+
     
 
     
@@ -36,20 +41,23 @@ jQuery(document).ready(function() {
     .attr("width", width + 200)
     .attr("height", height)
     .append("g")
-    //.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
-    updateBarChart(player_data,bar_svg); 
+    var bar_div = d3.select("body").append("div")
+    .attr("class", "tooltip-bars")
+    .style("opacity", 0);    
+
+    updateBarChart(player_data, bar_svg, bar_div); 
 
 
-    $('#data1_btn').on('click', function(){ updatePieChart(player_data,pie_svg) });
-    $('#data2_btn').on('click', function(){ updatePieChart(color_data,pie_svg) });
+    $('#data1_btn').on('click', function(){ updatePieChart(player_data, pie_svg, pie_div) });
+    $('#data2_btn').on('click', function(){ updatePieChart(color_data, pie_svg, pie_div) });
 
-    $('#bar_data1_btn').on('click', function(){ updateBarChart(player_data,bar_svg) });
-    $('#bar_data2_btn').on('click', function(){ updateBarChart(color_data,bar_svg) });    
+    $('#bar_data1_btn').on('click', function(){ updateBarChart(player_data, bar_svg, bar_div) });
+    $('#bar_data2_btn').on('click', function(){ updateBarChart(color_data, bar_svg, bar_div) });    
 
 });
 
-function updateBarChart(data,svg){
+function updateBarChart(data, svg, float_div){
 
   var width = 450;
   var height = 400;
@@ -99,9 +107,7 @@ function updateBarChart(data,svg){
     
   // ENTER    
 
-  var div = d3.select("body").append("div")
-  .attr("class", "tooltip-bars")
-  .style("opacity", 0);
+
 
   bars
     .enter().append("rect")
@@ -117,11 +123,11 @@ function updateBarChart(data,svg){
            .duration('50')
            .attr('opacity', '.85');
 
-           div.transition()
+           float_div.transition()
            .duration(50)
            .style("opacity", 1);
 
-           div.html(num)
+           float_div.html(num)
            .style("left", (d3.event.pageX + 10) + "px")
            .style("top", (d3.event.pageY - 15) + "px");           
     })
@@ -130,7 +136,7 @@ function updateBarChart(data,svg){
            .duration('50')
            .attr('opacity', '1');
 
-      div.transition()
+        float_div.transition()
           .duration('50')
           .style("opacity", 0);           
     });    
@@ -140,7 +146,7 @@ function updateBarChart(data,svg){
 
 }
 
-function updatePieChart(data,svg) {
+function updatePieChart(data, svg, float_div) {
   
   // set the dimensions and margins of the graph
   var width = 450;
@@ -179,9 +185,7 @@ function updatePieChart(data,svg) {
   svg.select(".legendOrdinal").remove();
   clearDataTable(dataTableClassName)
 
-  var div = d3.select("body").append("div")
-  .attr("class", "tooltip-pie")
-  .style("opacity", 0);  
+
 
   // Build the pie chart: Basically, each part of the pie is a path that we build using the arc function.
   u
@@ -216,6 +220,11 @@ function updatePieChart(data,svg) {
   .style("text-anchor", "middle")
   .style("font-size", 17);
 
+
+  /**
+   * 
+   * Adding the mouse-hover effect
+   */
   svg.selectAll("path")
   .on('mouseover', function (d, i) {
 
@@ -224,18 +233,22 @@ function updatePieChart(data,svg) {
          .duration(1)
          .attr('opacity', '.85');
 
-         div.transition()
+         float_div.transition()
          .duration(1)
          .style("opacity", 1);
 
-         div.html(num)
+         float_div.html(num)
          .style("left", (d3.event.pageX + 10) + "px")
          .style("top", (d3.event.pageY - 15) + "px");           
   })
   .on('mouseout', function (d, i) {
     d3.select(this).transition()
-         .duration('50')
+         .duration(1)
          .attr('opacity', '1');
+
+    float_div.transition()
+    .duration(1)
+    .style("opacity", 0);                  
   });
 
 
