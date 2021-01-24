@@ -39,7 +39,8 @@ class StatsController extends AbstractController
             'color_ranks' => $color_ranks,
             'total_games' => $total_games,
             'avg_game_length' => $avg_game_length,
-            'percent_sol_wins' => $percent_sol_wins
+            'percent_sol_wins' => $percent_sol_wins,
+
         ]);
     }
 

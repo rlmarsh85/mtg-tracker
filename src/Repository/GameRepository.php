@@ -166,4 +166,26 @@ class GameRepository extends ServiceEntityRepository
         return $count;            
     }
 
+    public function findPlayersGameStats(): int
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = '
+            SELECT SUM(first_or_second_turn_sol_ring) `games_with_sol_ring`, 
+            COUNT(game_id) `games`, 
+            SUM(first_or_second_turn_sol_ring) / COUNT(game_id) `percent_games_sol_ring`,
+            player.id, player.name
+            
+            FROM game_player
+            LEFT JOIN player
+            ON player.id = game_player.player_id
+            GROUP BY player_id, player.name
+            ';
+
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $count = intval(($stmt->fetch(\PDO::FETCH_COLUMN)));
+        return $count;            
+    }
+
 }
