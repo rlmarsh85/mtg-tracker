@@ -18,7 +18,10 @@ jQuery(document).ready(function() {
     var height = 450;
     var margin = 40;  
 
-    
+    /**
+     * 
+     * Setup Pie Chart
+     */
     var pie_svg = d3.select("#pie_chart_placeholder")
     .append("svg")
     .attr("width", width + 200)
@@ -30,12 +33,13 @@ jQuery(document).ready(function() {
     .attr("class", "tooltip-pie")
     .style("opacity", 0);      
         
-    updatePieChart(player_data, pie_svg, pie_div, "Total Games Won by Player")
+    updatePieChart(player_data, pie_svg, pie_div, $('#data1_btn').text() );
 
 
-    
-
-    
+    /**
+     * 
+     * Setup Bar Graph
+     */
     var bar_svg = d3.select("#bar_chart_placeholder")
     .append("svg")
     .attr("width", width + 200)
@@ -46,14 +50,18 @@ jQuery(document).ready(function() {
     .attr("class", "tooltip-bars")
     .style("opacity", 0);    
 
-    updateBarChart(player_data, bar_svg, bar_div, "Win Rate by Player"); 
+    updateBarChart(player_data, bar_svg, bar_div, $('#bar_data1_btn').text() ); 
 
 
-    $('#data1_btn').on('click', function(){ updatePieChart(player_data, pie_svg, pie_div, "Total Games Won by Player") });
-    $('#data2_btn').on('click', function(){ updatePieChart(color_data, pie_svg, pie_div, "Total Games Won by Color") });
+    /**
+     * 
+     * Setup button events
+     */
+    $('#pie-wins-by-player').on('click', function(){ updatePieChart(player_data, pie_svg, pie_div, this.innerHTML ) });
+    $('#pie-wins-by-color').on('click', function(){ updatePieChart(color_data, pie_svg, pie_div, this.innerHTML ) });
 
-    $('#bar_data1_btn').on('click', function(){ updateBarChart(player_data, bar_svg, bar_div, "Win Rate by Player") });
-    $('#bar_data2_btn').on('click', function(){ updateBarChart(color_data, bar_svg, bar_div, "Win Rate by Color") });    
+    $('#bar-win-rate-player').on('click', function(){ updateBarChart(player_data, bar_svg, bar_div, this.innerHTML ) });
+    $('#bar-win-rate-color').on('click', function(){ updateBarChart(color_data, bar_svg, bar_div, this.innerHTML ) });    
 
 });
 
@@ -67,7 +75,6 @@ function updateBarChart(data, svg, float_div, title){
   svg.selectAll("*").remove();
   clearDataTable(dataTableClassName);
 
-  console.log(title);
   svg
   .append('text')
   .text(title)
