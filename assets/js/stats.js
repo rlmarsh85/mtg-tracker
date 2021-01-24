@@ -179,6 +179,10 @@ function updatePieChart(data,svg) {
   svg.select(".legendOrdinal").remove();
   clearDataTable(dataTableClassName)
 
+  var div = d3.select("body").append("div")
+  .attr("class", "tooltip-pie")
+  .style("opacity", 0);  
+
   // Build the pie chart: Basically, each part of the pie is a path that we build using the arc function.
   u
     .enter()
@@ -194,7 +198,8 @@ function updatePieChart(data,svg) {
     .attr('class', function(d){ return "pie-slice " + resolveColor(d.data.key); } )
     .attr("stroke", "white")
     .style("stroke-width", "2px")
-    .style("opacity", 0.8)
+    .style("opacity", 0.8);
+
 
   // remove the group that is not present anymore
   u
@@ -209,22 +214,36 @@ function updatePieChart(data,svg) {
   .text(function(d){ return  d.data.value.WinRatio + "%" })
   .attr("transform", function(d) { return "translate(" + arcGenerator.centroid(d) + ")";  })
   .style("text-anchor", "middle")
-  .style("font-size", 17)
+  .style("font-size", 17);
 
-  svg
-  .selectAll('whatever')
-  .data(data_ready)
-  .enter()
-  .append('text')
-  .text(function(d){ return "(" + (d.data.value.NumWins) + " Games)"})
-  .attr("transform", function(d) { var centroid = arcGenerator.centroid(d);
-                                  var x = centroid[0];
-                                  var y = centroid[1] + 20;
-                                  return "translate(" + x + "," + y + ")";  
-                                  })
-  .style("text-anchor", "middle")
-  .style("font-size", 14)    
+  svg.selectAll("path")
+  .on('mouseover', function (d, i) {
 
+    var num = d.data.value.NumWins + " game" + ((d.data.value.NumWins == 1) ? "" : "s");
+    d3.select(this).transition()
+         .duration(1)
+         .attr('opacity', '.85');
+
+         div.transition()
+         .duration(1)
+         .style("opacity", 1);
+
+         div.html(num)
+         .style("left", (d3.event.pageX + 10) + "px")
+         .style("top", (d3.event.pageY - 15) + "px");           
+  })
+  .on('mouseout', function (d, i) {
+    d3.select(this).transition()
+         .duration('50')
+         .attr('opacity', '1');
+  });
+
+
+
+  /**
+   * 
+   * Adding Legend
+   */
 
   var ordinal = d3.scaleOrdinal()
   .domain(Object.keys(data))
@@ -266,6 +285,10 @@ function updatePieChart(data,svg) {
   addDataTable('pie_chart_placeholder', dataTableClassName, data);
   
 }
+
+
+
+
 
 function clearDataTable(class_name){
   d3.selectAll('.' + class_name).remove();
