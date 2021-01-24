@@ -130,6 +130,40 @@ class GameRepository extends ServiceEntityRepository
         $count = intval(($stmt->fetch(\PDO::FETCH_COLUMN)));
         // returns an array of arrays (i.e. a raw data set)
         return $count;
-    }    
+    } 
+    
+    public function findAverageGameLength(): float
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = '
+            SELECT AVG(number_turns) `number_turns`
+            FROM game
+            ';
+
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $count = floatval(($stmt->fetch(\PDO::FETCH_COLUMN)));
+        // returns an array of arrays (i.e. a raw data set)
+        return $count;        
+    }
+
+    public function findPercentWonWithSolRing(): float
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = '
+            SELECT SUM(IF((winning_player + first_or_second_turn_sol_ring) = 2,1,0)) / COUNT(DISTINCT game.id)
+            FROM game
+            LEFT JOIN game_player
+            ON game_player.game_id = game.id
+            ';
+
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $count = floatval(($stmt->fetch(\PDO::FETCH_COLUMN)));
+        // returns an array of arrays (i.e. a raw data set)
+        return $count;            
+    }
 
 }

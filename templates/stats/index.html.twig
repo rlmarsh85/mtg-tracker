@@ -16,91 +16,54 @@
 {% block body %}
     <h1>Game Stats</h1>
 
-    <table>
-        <tr rowspan="4">
-            <td>Player Ranks</td>
+    <h4>General Stats</h4>
+    <table style="margin-bottom:50px">
+        <tr>
+            <td>
+                Metric
+            </td>
+            <td>
+                Value
+            </td>
         </tr>
         <tr>
-            <td>Name</td>
-            <td>Number Games</td>
-            <td>Number Wins</td>
-            <td>Win Ratio (%)</td>
-        </tr>
-        {% for rank in player_ranks %}
-            <tr>
-                <td>{{rank.name}}</td>
-                <td>{{rank.num_games}}</td>
-                <td>{{rank.num_wins}}</td>
-                <td>{{rank.win_ratio}}</td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="3">no records found</td>
-            </tr>
-        {% endfor %}        
-
-    </table>
-
-    <br />
-    <br />
-    <table>
-        <tr rowspan="4">
-            <td>Deck Ranks</td>
+            <td>
+                Total Games Played
+            </td>
+            <td>
+                {{total_games}}
+            </td>
         </tr>
         <tr>
-            <td>Name</td>
-            <td>Number Games</td>
-            <td>Number Wins</td>
-            <td>Win Ratio (%)</td>
-        </tr>
-        {% for rank in deck_ranks %}
-            <tr>
-                <td>{{rank.name}}</td>
-                <td>{{rank.num_games}}</td>
-                <td>{{rank.num_wins}}</td>
-                <td>{{rank.win_ratio}}</td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="3">no records found</td>
-            </tr>
-        {% endfor %} 
-    </table>
-
-    <br />
-    <br />
-    <table>
-        <tr rowspan="4">
-            <td>Best Colors</td>
-        </tr>
+            <td>
+                Average Number of Turns
+            </td>
+            <td>
+                {{avg_game_length}}
+            </td>
+        </tr> 
         <tr>
-            <td>Color</td>
-            <td>Number Games</td>
-            <td>Number Wins</td>
-            <td>Win Ratio (%)</td>
-        </tr>
-        {% for rank in color_ranks %}
-            <tr>
-                <td>{{rank.name}}</td>
-                <td>{{rank.num_games}}</td>
-                <td>{{rank.num_wins}}</td>
-                <td>{{rank.win_ratio}}</td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="3">no records found</td>
-            </tr>
-        {% endfor %}                       
-
+            <td>
+                Percent of Games Won with First/Second Turn Sol Ring
+            </td>
+            <td>
+                {{percent_sol_wins}}%
+            </td>
+        </tr>                 
     </table>
+    
 
-    <p>Total games: {{total_games}}</p> 
-    <button id ="data1_btn">Data 1</button>   
-    <button id ="data2_btn">Data 2</button>
 
-    <button id ="bar_data1_btn">Bar Data 1</button>   
-    <button id ="bar_data2_btn">Bar Data 2</button>    
+    
 
-    <div id="pie_chart_placeholder"></div>
-    <div id="bar_chart_placeholder"></div>
+    <div class="visualization">
+        <button id ="data1_btn">Data 1</button>   
+        <button id ="data2_btn">Data 2</button>
+        <div id="pie_chart_placeholder" ></div>
+    </div>
+    <div class="visualization">
+        <button id ="bar_data1_btn">Bar Data 1</button>   
+        <button id ="bar_data2_btn">Bar Data 2</button>    
+        <div id="bar_chart_placeholder"></div>
+    </div>
 {% endblock %}

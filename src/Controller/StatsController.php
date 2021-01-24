@@ -29,13 +29,17 @@ class StatsController extends AbstractController
         $deck_ranks = $gameRepo->findDeckRanks();
         $color_ranks = $gameRepo->findColorRanks();
         $total_games = $gameRepo->findTotalNumberGames();
+        $avg_game_length = $gameRepo->findAverageGameLength();
+        $percent_sol_wins = $gameRepo->findPercentWonWithSolRing() * 100;
 
         return $this->render('stats/index.html.twig', [
             'player_ranks' => $player_ranks,
             'player_overall_ranks' => $player_overall_ranks,
             'deck_ranks' => $deck_ranks,
             'color_ranks' => $color_ranks,
-            'total_games' => $total_games
+            'total_games' => $total_games,
+            'avg_game_length' => $avg_game_length,
+            'percent_sol_wins' => $percent_sol_wins
         ]);
     }
 
