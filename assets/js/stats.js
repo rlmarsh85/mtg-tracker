@@ -30,7 +30,7 @@ jQuery(document).ready(function() {
     .attr("class", "tooltip-pie")
     .style("opacity", 0);      
         
-    updatePieChart(player_data, pie_svg, pie_div)
+    updatePieChart(player_data, pie_svg, pie_div, "Total Games Won by Player")
 
 
     
@@ -46,18 +46,18 @@ jQuery(document).ready(function() {
     .attr("class", "tooltip-bars")
     .style("opacity", 0);    
 
-    updateBarChart(player_data, bar_svg, bar_div); 
+    updateBarChart(player_data, bar_svg, bar_div, "Win Rate by Player"); 
 
 
-    $('#data1_btn').on('click', function(){ updatePieChart(player_data, pie_svg, pie_div) });
-    $('#data2_btn').on('click', function(){ updatePieChart(color_data, pie_svg, pie_div) });
+    $('#data1_btn').on('click', function(){ updatePieChart(player_data, pie_svg, pie_div, "Total Games Won by Player") });
+    $('#data2_btn').on('click', function(){ updatePieChart(color_data, pie_svg, pie_div, "Total Games Won by Color") });
 
-    $('#bar_data1_btn').on('click', function(){ updateBarChart(player_data, bar_svg, bar_div) });
-    $('#bar_data2_btn').on('click', function(){ updateBarChart(color_data, bar_svg, bar_div) });    
+    $('#bar_data1_btn').on('click', function(){ updateBarChart(player_data, bar_svg, bar_div, "Win Rate by Player") });
+    $('#bar_data2_btn').on('click', function(){ updateBarChart(color_data, bar_svg, bar_div, "Win Rate by Color") });    
 
 });
 
-function updateBarChart(data, svg, float_div){
+function updateBarChart(data, svg, float_div, title){
 
   var width = 450;
   var height = 400;
@@ -66,12 +66,20 @@ function updateBarChart(data, svg, float_div){
 
   svg.selectAll("*").remove();
   clearDataTable(dataTableClassName);
+
+  console.log(title);
+  svg
+  .append('text')
+  .text(title)
+  .attr("class", "graph-title")
+  .style("text-anchor", "left")
+  .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
   
   var x = d3.scaleBand().padding(0.1),
   y = d3.scaleLinear();  
 
   var g = svg.append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    .attr("transform", "translate(" + margin.left + "," + (margin.top * 2) + ")");
     
 
   g.append("g")
@@ -146,7 +154,7 @@ function updateBarChart(data, svg, float_div){
 
 }
 
-function updatePieChart(data, svg, float_div) {
+function updatePieChart(data, svg, float_div, title) {
   
   // set the dimensions and margins of the graph
   var width = 450;
@@ -185,7 +193,13 @@ function updatePieChart(data, svg, float_div) {
   svg.select(".legendOrdinal").remove();
   clearDataTable(dataTableClassName)
 
-
+  svg
+  .append('text')
+  .text(title)
+  .attr("class", "graph-title")
+  .style("text-anchor", "left")
+  .attr("transform", "translate(-" + ((width / 2) -10) + ", -" + (height/2.25) + ")" );
+    
 
   // Build the pie chart: Basically, each part of the pie is a path that we build using the arc function.
   u
