@@ -272,7 +272,7 @@ function updatePieChart(data,svg) {
       });      
   
 
-
+  var sortAscending = true;
   var table = d3.select("#pie_chart_placeholder").append('table').attr('class','pie-chart-table');
   var titles = Object.keys(data[Object.keys(data)[0]]);
 
