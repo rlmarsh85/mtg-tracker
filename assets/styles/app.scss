@@ -57,6 +57,13 @@ div.tooltip-bars, div.tooltip-pie {
 
 .pie-chart-table, .bar-chart-table{
   display:none;
+  clear:both;
+}
+
+.data-table-control{
+  display:block;
+  float:left;
+  margin-left:15px; 
 }
 
 .visualization{

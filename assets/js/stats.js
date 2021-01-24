@@ -330,16 +330,19 @@ function clearDataTable(class_name){
 }
 
 function addDataTable(parent_id, class_name, data){
-  var showDataButton = d3.select("#" + parent_id).append("div")
-  .attr('class', 'data-table-control-' + class_name)
+
+  var parent_control_div = d3.select("#" + parent_id).append("div");
+  
+  parent_control_div.append("div")
+  .attr('class', 'data-table-control data-table-control-' + class_name)
   .html("Show Raw Data")
   .on('click', function(d,i){
     d3.select('.' + class_name)
       .style('display', 'block')
-  });
+  })
 
-  var showDataButton = d3.select("#" + parent_id).append("div")
-  .attr('class', 'data-table-control-' + class_name)
+  parent_control_div.append("div")
+  .attr('class', ' data-table-control data-table-control-' + class_name)
   .html("Hide Raw Data")
   .on('click', function(d,i){
     d3.select('.' + class_name)

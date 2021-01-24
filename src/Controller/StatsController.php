@@ -31,6 +31,7 @@ class StatsController extends AbstractController
         $total_games = $gameRepo->findTotalNumberGames();
         $avg_game_length = $gameRepo->findAverageGameLength();
         $percent_sol_wins = $gameRepo->findPercentWonWithSolRing() * 100;
+        $player_game_stats = $gameRepo->findPlayersGameStats();
 
         return $this->render('stats/index.html.twig', [
             'player_ranks' => $player_ranks,
@@ -40,6 +41,7 @@ class StatsController extends AbstractController
             'total_games' => $total_games,
             'avg_game_length' => $avg_game_length,
             'percent_sol_wins' => $percent_sol_wins,
+            'player_game_stats' => $player_game_stats
 
         ]);
     }
