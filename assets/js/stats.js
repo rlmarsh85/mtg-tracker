@@ -1,5 +1,6 @@
 var d3 = require('d3');
 var d3legend = require('d3-svg-legend');
+const { merge } = require('jquery');
 
 function resolveColor(name){
   name = name.toLowerCase();
@@ -209,23 +210,25 @@ function updatePieChart(data, svg, float_div, title) {
   .style("text-anchor", "left")
   .attr("transform", "translate(-" + ((width / 2) -10) + ", -" + (height/2.25) + ")" );
     
-
+    
   // Build the pie chart: Basically, each part of the pie is a path that we build using the arc function.
-  u
-    .enter()
-    .append('path')
-    .merge(u)
-    .transition()
-    .duration(1000)
-    .attr('d', d3.arc()
-      .innerRadius(0)
-      .outerRadius(radius)
-    )
-    .attr('fill', function(d){ return(color(d.data.key)) })
-    .attr('class', function(d){ return "pie-slice " + resolveColor(d.data.key); } )
-    .attr("stroke", "white")
-    .style("stroke-width", "2px")
-    .style("opacity", 0.8);
+  svg.selectAll("path")
+  .data(data_ready)
+  .enter()
+  .append('path')
+  .merge(svg.selectAll("path"))
+  .transition()
+  .duration(1000)    
+  .attr('d', d3.arc()
+    .innerRadius(0)
+    .outerRadius(radius)
+  )
+    
+  .attr('fill', function(d){ console.log(d.data.key); return(color(d.data.key)) })
+  .attr('class', function(d){ return "pie-slice " + resolveColor(d.data.key); } )
+  .attr("stroke", "white")
+  .style("stroke-width", "2px")
+  .style("opacity", 0.8);
 
 
   // remove the group that is not present anymore

@@ -22,7 +22,7 @@ class GameRepository extends ServiceEntityRepository
     /**
      * Gets each players win rate, i.e. percent of games won of all games which that player played in
      */
-    public function findPlayerRanks(): array
+    public function findPlayerRanks($limit=-1): array
     {
         $conn = $this->getEntityManager()->getConnection();
 
@@ -36,7 +36,7 @@ class GameRepository extends ServiceEntityRepository
             HAVING `num_wins` > 0
             ORDER BY win_ratio DESC            
             ';
-
+        $sql .= ($limit == -1) ? "" : ("LIMIT " . $limit);
         $stmt = $conn->prepare($sql);
         $stmt->execute();
 
@@ -48,7 +48,7 @@ class GameRepository extends ServiceEntityRepository
     /**
      * Gets player's overall win rate, i.e. percent of games won out of all games played
      */
-    public function findPlayerOverallRanks(): array
+    public function findPlayerOverallRanks($limit=-1): array
     {
         $conn = $this->getEntityManager()->getConnection();
 
@@ -65,6 +65,7 @@ class GameRepository extends ServiceEntityRepository
             HAVING `num_wins` > 0
             ORDER BY win_ratio DESC            
             ';
+        $sql .= ($limit == -1) ? "" : ("LIMIT " . $limit);
 
         $stmt = $conn->prepare($sql);
         $stmt->execute();
@@ -76,7 +77,7 @@ class GameRepository extends ServiceEntityRepository
     /**
      * Gets the win rate of each deck, i.e. percent of games won of all games which that deck was played
      */
-    public function findDeckRanks(): array
+    public function findDeckRanks($limit=-1): array
     {
         $conn = $this->getEntityManager()->getConnection();
 
@@ -89,8 +90,8 @@ class GameRepository extends ServiceEntityRepository
             GROUP BY deck.id, deck.name
             HAVING num_wins > 0
             ORDER BY win_ratio DESC            
-            LIMIT 5
             ';
+        $sql .= ($limit == -1) ? "" : ("LIMIT " . $limit);            
 
         $stmt = $conn->prepare($sql);
         $stmt->execute();
@@ -99,7 +100,7 @@ class GameRepository extends ServiceEntityRepository
         return $stmt->fetchAllAssociative();
     }
 
-    public function findDeckOverallRanks(): array
+    public function findDeckOverallRanks($limit=-1): array
     {
         $conn = $this->getEntityManager()->getConnection();
 
@@ -114,8 +115,8 @@ class GameRepository extends ServiceEntityRepository
             GROUP BY deck.id, deck.name
             HAVING num_wins > 0
             ORDER BY win_ratio DESC 
-            LIMIT 5          
             ';
+        $sql .= ($limit == -1) ? "" : ("LIMIT " . $limit);
 
         $stmt = $conn->prepare($sql);
         $stmt->execute();
