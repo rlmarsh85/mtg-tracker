@@ -53,10 +53,12 @@ jQuery(document).ready(function() {
     $('#pie-wins-by-player').on('click', function(){ updatePieChart(player_overall_data, pie_svg, pie_div, this.innerHTML ) });
     $('#pie-wins-by-color').on('click', function(){ updatePieChart(color_overall_data, pie_svg, pie_div, this.innerHTML ) });
     $('#pie-wins-by-deck').on('click', function(){ updatePieChart(deck_overall_data, pie_svg, pie_div, this.innerHTML ) });
+    $('#pie-wins-by-commander').on('click', function(){ updatePieChart(commander_overall_data, pie_svg, pie_div, this.innerHTML ) });
 
     $('#bar-win-rate-player').on('click', function(){ updateBarChart(player_data, bar_svg, bar_div, this.innerHTML ) });
     $('#bar-win-rate-color').on('click', function(){ updateBarChart(color_data, bar_svg, bar_div, this.innerHTML ) });    
     $('#bar-win-rate-deck').on('click', function(){ updateBarChart(deck_data, bar_svg, bar_div, this.innerHTML ) });
+    $('#bar-win-rate-commander').on('click', function(){ updateBarChart(commander_data, bar_svg, bar_div, this.innerHTML ) });
 
 });
 

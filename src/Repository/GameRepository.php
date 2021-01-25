@@ -36,7 +36,7 @@ class GameRepository extends ServiceEntityRepository
             HAVING `num_wins` > 0
             ORDER BY win_ratio DESC            
             ';
-        $sql .= ($limit == -1) ? "" : ("LIMIT " . $limit);
+        $sql .= ($limit == -1) ? "" : (" LIMIT " . $limit);
         $stmt = $conn->prepare($sql);
         $stmt->execute();
 
@@ -65,7 +65,7 @@ class GameRepository extends ServiceEntityRepository
             HAVING `num_wins` > 0
             ORDER BY win_ratio DESC            
             ';
-        $sql .= ($limit == -1) ? "" : ("LIMIT " . $limit);
+        $sql .= ($limit == -1) ? "" : (" LIMIT " . $limit);
 
         $stmt = $conn->prepare($sql);
         $stmt->execute();
@@ -91,7 +91,7 @@ class GameRepository extends ServiceEntityRepository
             HAVING num_wins > 0
             ORDER BY win_ratio DESC            
             ';
-        $sql .= ($limit == -1) ? "" : ("LIMIT " . $limit);            
+        $sql .= ($limit == -1) ? "" : (" LIMIT " . $limit);            
 
         $stmt = $conn->prepare($sql);
         $stmt->execute();
@@ -119,7 +119,7 @@ class GameRepository extends ServiceEntityRepository
             HAVING num_wins > 0
             ORDER BY win_ratio DESC 
             ';
-        $sql .= ($limit == -1) ? "" : ("LIMIT " . $limit);
+        $sql .= ($limit == -1) ? "" : (" LIMIT " . $limit);
 
         $stmt = $conn->prepare($sql);
         $stmt->execute();
@@ -188,6 +188,77 @@ class GameRepository extends ServiceEntityRepository
             ORDER BY win_ratio DESC    
             ';
 
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+
+        // returns an array of arrays (i.e. a raw data set)
+        return $stmt->fetchAllAssociative();
+    }
+    
+    /**
+     * Get the win ratio for each commander, i.e. the win percent for each game in which the commander is played.
+     */
+    public function findCommanderRanks($limit = -1): array
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = '
+            SELECT commander.id, commander.name, COUNT(game_id) `num_games`, SUM(winning_player) `num_wins`, 
+            ROUND(( SUM(winning_player) / COUNT(DISTINCT game_id) * 100  ),2) `win_ratio`, COUNT(DISTINCT game_id) c
+            FROM deck
+            LEFT JOIN game_player
+            ON game_player.deck_id = deck.id
+            
+            LEFT JOIN commanders_decks
+            ON commanders_decks.deck_id = deck.id
+            LEFT JOIN commander
+            ON commander.id = commanders_decks.commander_id
+            
+            GROUP BY commander.id, commander.name
+            HAVING num_wins > 0
+            ORDER BY win_ratio DESC        
+            ';
+        $sql .= ($limit == -1) ? "" : (" LIMIT " . $limit);
+
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+
+        // returns an array of arrays (i.e. a raw data set)
+        return $stmt->fetchAllAssociative();        
+    }
+
+    /**
+     * Finds the overall win ratio for each commadner, i.e. the percent win among ALL games played.
+     */
+    public function findCommanderOverallRanks($limit = -1): array
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = '
+                SELECT 
+                commander.id, commander.name, COUNT(game_id) `num_games`, SUM(winning_player) `num_wins`, 
+                ROUND(( SUM(winning_player) / total_games.c * 100  ),2) `win_ratio`, total_games.c
+                FROM deck
+                LEFT JOIN game_player
+                ON game_player.deck_id = deck.id
+                LEFT JOIN commanders_decks
+                ON commanders_decks.deck_id = deck.id
+                LEFT JOIN commander
+                ON commander.id = commanders_decks.commander_id
+                LEFT JOIN 
+                    (SELECT COUNT(game.id) c 
+                        FROM game_player 
+                        LEFT JOIN game ON game.id = game_player.game_id 
+                        LEFT JOIN game_format ON game_format.id = game.format_id
+                        WHERE winning_player = 1
+                        AND game_format.name IN ("CEDH", "EDH")
+                    ) `total_games` ON 1 = 1            
+                GROUP BY commander.id, commander.name
+                HAVING win_ratio > 0
+                ORDER BY win_ratio DESC
+            ';
+        $sql .= ($limit == -1) ? "" : (" LIMIT " . $limit);
+        
         $stmt = $conn->prepare($sql);
         $stmt->execute();
 
