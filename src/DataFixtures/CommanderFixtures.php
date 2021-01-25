@@ -23,7 +23,17 @@ class CommanderFixtures extends Fixture
           ["Teysa Karlov","https://scryfall.com/card/rna/212/teysa-karlov",["White","Black"]],
           ["Kambal","https://scryfall.com/card/klr/198/kambal-consul-of-allocation",["Black","White"]],
           ["Kaheera","https://scryfall.com/card/iko/224/kaheera-the-orphanguard",["White", "Green"]],
-          ["Arahbo","https://scryfall.com/card/c17/35/arahbo-roar-of-the-world", ["White", "Green"]]
+          ["Arahbo","https://scryfall.com/card/c17/35/arahbo-roar-of-the-world", ["White", "Green"]],
+          ["Golos, Tireless Pilgrim","https://scryfall.com/card/m20/226/golos-tireless-pilgrim", ["White","Green","Blue","Black","Red"]],
+          ["Sai, Master Thopterist","https://scryfall.com/card/m19/69/sai-master-thopterist",["Blue"]],
+          ["Ezuri, Renegade Leader","https://scryfall.com/card/ddu/1/ezuri-renegade-leader",["Green"]],
+          ["Sethron, Hurloon General", "https://scryfall.com/card/jmp/25/sethron-hurloon-general", ["Red", "Black"]],
+          ["Teysa, Orzhov Scion","https://scryfall.com/card/gpt/134/teysa-orzhov-scion",["Black", "White"]],
+          ["Savra, Queen of the Golgari","https://scryfall.com/card/rav/225/savra-queen-of-the-golgari",["Green","Black"]],
+          ["Trostani, Selesnya's Voice","https://scryfall.com/card/c19/204/trostani-selesnyas-voice",["Green","White"]],
+          ["Zaxara, the Exemplary","https://scryfall.com/card/c20/20/zaxara-the-exemplary",["Black","Green","Blue"]],
+          ["Arcanis the Omnipotent","https://scryfall.com/card/c17/80/arcanis-the-omnipotent",["Blue"]],
+          ["Starke of Rath","https://scryfall.com/card/tpr/162/starke-of-rath",["Red"]]
         ];
         $colorRepo = $manager->getRepository(Color::class);
 

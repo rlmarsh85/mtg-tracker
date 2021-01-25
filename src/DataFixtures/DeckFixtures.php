@@ -33,7 +33,21 @@ class DeckFixtures extends Fixture  implements DependentFixtureInterface
           ["Sysmic Swans", "Use lands for kills", "EDH", "Jesse", ["Kynaios"],["Red","Green","White","Blue"]],
           ["Death Triggers", "Sac Creatuers, double up and do things","EDH","Fed",["Teysa Karlov"],["Black","White"]],
           ["COVID-19", "Gain Life and plague everthing", "EDH", "Lee", ["Kambal"],["Black", "White"]],
-          ["Cat Party Fast", "Destory lands kill, death by cats", "EDH", "Jesse",["Kaheera","Arahbo"],["White","Green"]]
+          ["Cat Party Fast", "Destory lands kill, death by cats", "EDH", "Jesse",["Kaheera","Arahbo"],["White","Green"]],
+          ["Golos Storm", "Dumb combos", "CEDH", "Lee", ["Golos, Tireless Pilgrim"],["White","Green","Blue","Black","Red"]],
+          ["Ezuri elves", "It's Elves!", "EDH", "Mike", ["Ezuri, Renegade Leader"],["Green"]],
+          ["Thopter Storm","Make a lot of thopters","EDH", "Zane", ["Sai, Master Thopterist"],["Blue"]],
+          ["A Canticle for Golos", "Get 10 gates", "EDH", "Zane", ["Golos, Tireless Pilgrim"],["White","Green","Blue","Black","Red"]],
+          ["Sacrifice Your Feelings", "Sac and cause paint", "EDH", "Mike", ["Savra, Queen of the Golgari"],["Green","Black"]],
+          ["Minataur Maze", "Menacing minataurs", "EDH", "Lee", ["Sethron, Hurloon General"],["Red","Black"]],
+          ["Orzhov Elephant", "Piss everyone off", "EDH", "Jesse",["Teysa, Orzhov Scion"],["Black","White"]],
+          ["Oko Miracles", "Win with miracles", "Duel", "Jesse",[],["Blue","Green"]],
+          ["Classic Burn", "Burn and wheel", "Duel", "Lee", [], ["Red"]],
+          ["Red/Green Devotion", "", "Duel", "Jesse", [], ["Red","Green"]],
+          ["She's Got Worms", "", "EDH", "Mike",["Trostani, Selesnya's Voice"],["Green","White"]],
+          ["Super Xman Hydras", "Big X spells and hydras", "EDH", "Jesse",["Zaxara, the Exemplary"],["Black","Green","Blue"]],
+          ["Turn Walk", "Counter and combo", "EDH", "Lee", ["Arcanis the Omnipotent"],["Blue"]],
+          ["Backstab", "Destroy stuff?", "EDH", "Lee", ["Starke of Rath"], ["Red"]]
         ];
 
         $formatRepo = $manager->getRepository(GameFormat::class);
