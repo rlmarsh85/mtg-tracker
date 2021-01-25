@@ -46,7 +46,7 @@ class GameRepository extends ServiceEntityRepository
 
 
     /**
-     * Gets player's overall win rate, i.e. percent of games won out of all games played
+     * Gets player's overall win rate, i.e. percent of games won out of ALL games played
      */
     public function findPlayerOverallRanks($limit=-1): array
     {
@@ -100,6 +100,9 @@ class GameRepository extends ServiceEntityRepository
         return $stmt->fetchAllAssociative();
     }
 
+    /**
+     * Gets decks overall win rate, i.e. percent of games won of ALL games played.
+     */
     public function findDeckOverallRanks($limit=-1): array
     {
         $conn = $this->getEntityManager()->getConnection();
@@ -125,7 +128,14 @@ class GameRepository extends ServiceEntityRepository
         return $stmt->fetchAllAssociative();
     }    
     
-    public function findColorRanks(): array
+    /**
+     * Get the overall win rate for colors, i.e. how often this color wins among games in which it's played.
+     * This is confusing because the percent total summed is > 100 because, remember, this is how
+     * well each color performs among the games where it's played.
+     * This is also confusing because if two players are playing decks with the same color,
+     * then the match is still counted as a win for the color.
+     */
+    public function findColorOverallRanks(): array
     {
         $conn = $this->getEntityManager()->getConnection();
 
@@ -152,6 +162,38 @@ class GameRepository extends ServiceEntityRepository
         // returns an array of arrays (i.e. a raw data set)
         return $stmt->fetchAllAssociative();
     }
+
+    /**
+     * Gets the win rate for each color, i.e. how often the color wins among ALL games.
+     * This one is confusing because the total % is still > 100. This time it's because a winning
+     * deck can and usually does represent more than one color. May not actually be appropriate to
+     * display as a pie chart ...
+     */
+    public function findColorRanks(): array
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = '
+            SELECT color.id, color.name, COUNT(game_id) `num_games`, SUM(winning_player) `num_wins`, 
+            ROUND(( SUM(winning_player) / COUNT(DISTINCT game_id) * 100  ),2) `win_ratio`
+            FROM deck
+            LEFT JOIN game_player
+            ON game_player.deck_id = deck.id
+            LEFT JOIN decks_colors
+            ON decks_colors.deck_id = deck.id
+            LEFT JOIN color
+            ON color.id = decks_colors.color_id  
+            GROUP BY color.id, color.name
+            HAVING num_wins > 0
+            ORDER BY win_ratio DESC    
+            ';
+
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+
+        // returns an array of arrays (i.e. a raw data set)
+        return $stmt->fetchAllAssociative();
+    }    
     
     public function findTotalNumberGames(): int
     {

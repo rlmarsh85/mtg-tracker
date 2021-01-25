@@ -2,14 +2,6 @@ var d3 = require('d3');
 var d3legend = require('d3-svg-legend');
 const { merge } = require('jquery');
 
-function resolveColor(name){
-  name = name.toLowerCase();
-  if(name == "red" || name == "blue" || name == "black" || name == "green" || name == "white"){
-    return name;
-  }
-  
-  return "";
-}
 
 jQuery(document).ready(function() {
 
@@ -59,7 +51,7 @@ jQuery(document).ready(function() {
      * Setup button events
      */
     $('#pie-wins-by-player').on('click', function(){ updatePieChart(player_overall_data, pie_svg, pie_div, this.innerHTML ) });
-    $('#pie-wins-by-color').on('click', function(){ updatePieChart(color_data, pie_svg, pie_div, this.innerHTML ) });
+    $('#pie-wins-by-color').on('click', function(){ updatePieChart(color_overall_data, pie_svg, pie_div, this.innerHTML ) });
     $('#pie-wins-by-deck').on('click', function(){ updatePieChart(deck_overall_data, pie_svg, pie_div, this.innerHTML ) });
 
     $('#bar-win-rate-player').on('click', function(){ updateBarChart(player_data, bar_svg, bar_div, this.innerHTML ) });
@@ -276,8 +268,6 @@ function updatePieChart(data, svg, float_div, title) {
 
 
 
-
-
 function clearDataTable(class_name){
   d3.selectAll('.' + class_name).remove();
   d3.selectAll('.data-table-control-' + class_name).remove();
@@ -376,4 +366,13 @@ function addHoverEffect(svg, select_clause, float_div, callback){
     .style("opacity", 0);                  
   });
 
+}
+
+function resolveColor(name){
+  name = name.toLowerCase();
+  if(name == "red" || name == "blue" || name == "black" || name == "green" || name == "white"){
+    return name;
+  }
+  
+  return "";
 }

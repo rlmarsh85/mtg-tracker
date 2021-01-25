@@ -32,6 +32,8 @@ class StatsController extends AbstractController
         $deck_overall_ranks = $gameRepo->findDeckOverallRanks(5);
 
         $color_ranks = $gameRepo->findColorRanks();
+        $color_overall_ranks = $gameRepo->findColorOverallRanks();
+
         $total_games = $gameRepo->findTotalNumberGames();
         $avg_game_length = $gameRepo->findAverageGameLength();
         $percent_sol_wins = $gameRepo->findPercentWonWithSolRing() * 100;
@@ -43,6 +45,7 @@ class StatsController extends AbstractController
             'deck_ranks' => $deck_ranks,
             'deck_overall_ranks' => $deck_overall_ranks,
             'color_ranks' => $color_ranks,
+            'color_overall_ranks' => $color_overall_ranks,
             'total_games' => $total_games,
             'avg_game_length' => $avg_game_length,
             'percent_sol_wins' => $percent_sol_wins,
