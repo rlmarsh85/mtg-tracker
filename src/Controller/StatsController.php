@@ -28,8 +28,8 @@ class StatsController extends AbstractController
         $player_ranks = $gameRepo->findPlayerRanks();
         $player_overall_ranks = $gameRepo->findPlayerOverallRanks();
 
-        $deck_ranks = $gameRepo->findDeckRanks(7);
-        $deck_overall_ranks = $gameRepo->findDeckOverallRanks(7);
+        $deck_ranks = $gameRepo->findDeckRanks(5);
+        $deck_overall_ranks = $gameRepo->findDeckOverallRanks(5);
 
         $color_ranks = $gameRepo->findColorRanks();
         $total_games = $gameRepo->findTotalNumberGames();

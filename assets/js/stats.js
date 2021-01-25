@@ -133,33 +133,12 @@ function updateBarChart(data, svg, float_div, title){
     .attr("x", function (d) { return x(d.Name); })
     .attr("y", function (d) { return y(d.WinRatio); })
     .attr("width", x.bandwidth())
-    .attr("height", function (d) { return height - y(d.WinRatio); })
+    .attr("height", function (d) { return height - y(d.WinRatio); });
 
-    .on('mouseover', function (d, i) {
-      var num = d.NumWins + " game" + ((d.NumWins == 1) ? "" : "s");
-      d3.select(this).transition()
-           .duration('50')
-           .attr('opacity', '.85');
+  
+  addHoverEffect(svg,".bar",float_div, function(d){ return d.NumWins});
 
-           float_div.transition()
-           .duration(50)
-           .style("opacity", 1);
-
-           float_div.html(num)
-           .style("left", (d3.event.pageX + 10) + "px")
-           .style("top", (d3.event.pageY - 15) + "px");           
-    })
-    .on('mouseout', function (d, i) {
-      d3.select(this).transition()
-           .duration('50')
-           .attr('opacity', '1');
-
-        float_div.transition()
-          .duration('50')
-          .style("opacity", 0);           
-    });    
-
-    addDataTable('bar_chart_placeholder',dataTableClassName,data);
+  addDataTable('bar_chart_placeholder',dataTableClassName,data);
 
 
 }
@@ -208,8 +187,8 @@ function updatePieChart(data, svg, float_div, title) {
   .text(title)
   .attr("class", "graph-title")
   .style("text-anchor", "left")
-  .attr("transform", "translate(-" + ((width / 2) -10) + ", -" + (height/2.25) + ")" );
-    
+  .attr("transform", "translate(-" + ((width / 2) -10) + ", -" + ( height/2 + 30 ) + ")" );
+
     
   // Build the pie chart: Basically, each part of the pie is a path that we build using the arc function.
   svg.selectAll("path")
@@ -224,7 +203,7 @@ function updatePieChart(data, svg, float_div, title) {
     .outerRadius(radius)
   )
     
-  .attr('fill', function(d){ console.log(d.data.key); return(color(d.data.key)) })
+  .attr('fill', function(d){ return(color(d.data.key)) })
   .attr('class', function(d){ return "pie-slice " + resolveColor(d.data.key); } )
   .attr("stroke", "white")
   .style("stroke-width", "2px")
@@ -247,37 +226,7 @@ function updatePieChart(data, svg, float_div, title) {
   .style("font-size", 17);
 
 
-  /**
-   * 
-   * Adding the mouse-hover effect
-   */
-  svg.selectAll("path")
-  .on('mouseover', function (d, i) {
-
-    var num = d.data.value.NumWins + " game" + ((d.data.value.NumWins == 1) ? "" : "s");
-    d3.select(this).transition()
-         .duration(1)
-         .attr('opacity', '.85');
-
-         float_div.transition()
-         .duration(1)
-         .style("opacity", 1);
-
-         float_div.html(num)
-         .style("left", (d3.event.pageX + 10) + "px")
-         .style("top", (d3.event.pageY - 15) + "px");           
-  })
-  .on('mouseout', function (d, i) {
-    d3.select(this).transition()
-         .duration(1)
-         .attr('opacity', '1');
-
-    float_div.transition()
-    .duration(1)
-    .style("opacity", 0);                  
-  });
-
-
+  addHoverEffect(svg, 'path', float_div, function(d){ return d.data.value.NumWins});
 
   /**
    * 
@@ -397,4 +346,34 @@ function addDataTable(parent_id, class_name, data){
   .text(function (d) {
     return d.value;
   });          
+}
+
+function addHoverEffect(svg, select_clause, float_div, callback){
+
+  svg.selectAll(select_clause)
+  .on('mouseover', function (d, i) {
+
+    var num = callback(d) + " game" + ((callback(d) == 1) ? "" : "s");
+    d3.select(this).transition()
+         .duration(1)
+         .attr('opacity', '.85');
+
+         float_div.transition()
+         .duration(1)
+         .style("opacity", 1);
+
+         float_div.html(num)
+         .style("left", (d3.event.pageX + 10) + "px")
+         .style("top", (d3.event.pageY - 15) + "px");           
+  })
+  .on('mouseout', function (d, i) {
+    d3.select(this).transition()
+         .duration(1)
+         .attr('opacity', '1');
+
+    float_div.transition()
+    .duration(1)
+    .style("opacity", 0);                  
+  });
+
 }
