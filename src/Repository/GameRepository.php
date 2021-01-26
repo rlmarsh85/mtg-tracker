@@ -213,7 +213,8 @@ class GameRepository extends ServiceEntityRepository
             ON commanders_decks.deck_id = deck.id
             LEFT JOIN commander
             ON commander.id = commanders_decks.commander_id
-            
+
+            WHERE commander.id IS NOT NULL
             GROUP BY commander.id, commander.name
             HAVING num_wins > 0
             ORDER BY win_ratio DESC        
@@ -253,6 +254,8 @@ class GameRepository extends ServiceEntityRepository
                         WHERE winning_player = 1
                         AND game_format.name IN ("CEDH", "EDH")
                     ) `total_games` ON 1 = 1            
+                    
+                WHERE commander.id IS NOT NULL                    
                 GROUP BY commander.id, commander.name
                 HAVING win_ratio > 0
                 ORDER BY win_ratio DESC

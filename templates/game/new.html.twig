@@ -4,8 +4,9 @@
 
 {% block body %}
     <h1>Create new Game</h1>
-
+    <div id="form_container">
     {{ include('game/_form.html.twig') }}
+    </div>
 
     <a href="{{ path('game_index') }}">back to list</a>
 {% endblock %}
