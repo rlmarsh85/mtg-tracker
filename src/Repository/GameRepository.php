@@ -135,26 +135,32 @@ class GameRepository extends ServiceEntityRepository
      * This is also confusing because if two players are playing decks with the same color,
      * then the match is still counted as a win for the color.
      */
-    public function findColorOverallRanks(): array
+    public function findColorOverallRanks($limit = -1): array
     {
         $conn = $this->getEntityManager()->getConnection();
 
         $sql = '
-            SELECT 
-            color.id, color.name, COUNT(game_id) `num_games`, SUM(winning_player) `num_wins`, 
-            ROUND(( SUM(winning_player) / total_games.c * 100  ),2) `win_ratio`
-            FROM deck
+            SELECT deck.name, COUNT(DISTINCT game_player.game_id) `num_games`, SUM(winning_player) `num_wins`, 
+            ROUND(( SUM(winning_player) / total_games.c * 100  ),2) `win_ratio`            
+            
+            FROM 
+            (
+                SELECT deck.id, 
+                IF( GROUP_CONCAT(color.name SEPARATOR  \'/\') = "Blue/Black/Green/Red/White", "5 color", GROUP_CONCAT(color.name SEPARATOR  \'/\') )  `name`
+                FROM deck 
+                LEFT JOIN decks_colors ON deck.id = decks_colors.deck_id 
+                LEFT JOIN color ON color.id = decks_colors.color_id 
+                GROUP BY deck.id
+            ) `deck`
             LEFT JOIN game_player
             ON game_player.deck_id = deck.id
-            LEFT JOIN decks_colors
-            ON decks_colors.deck_id = deck.id
-            LEFT JOIN color
-            ON color.id = decks_colors.color_id
             LEFT JOIN 
-                (SELECT COUNT(id) c FROM game_player WHERE winning_player = 1) total_games ON 1 = 1            
-            GROUP BY color.id, color.name
+                (SELECT COUNT(id) c FROM game) total_games ON 1 = 1            
+            GROUP BY `deck`.name
+            HAVING num_wins IS NOT NULL AND num_wins > 0            
             ORDER BY win_ratio DESC
             ';
+        $sql .= ($limit == -1) ? "" : (" LIMIT " . $limit);            
 
         $stmt = $conn->prepare($sql);
         $stmt->execute();
@@ -174,8 +180,8 @@ class GameRepository extends ServiceEntityRepository
         $conn = $this->getEntityManager()->getConnection();
 
         $sql = '
-            SELECT color.id, color.name, COUNT(game_id) `num_games`, SUM(winning_player) `num_wins`, 
-            ROUND(( SUM(winning_player) / COUNT(DISTINCT game_id) * 100  ),2) `win_ratio`
+            SELECT color.id, color.name, COUNT(game_player.id) `num_games`, SUM(winning_player) `num_wins`, 
+            ROUND(( SUM(winning_player) / COUNT(game_player.id) * 100  ),2) `win_ratio`
             FROM deck
             LEFT JOIN game_player
             ON game_player.deck_id = deck.id
@@ -254,7 +260,7 @@ class GameRepository extends ServiceEntityRepository
                         WHERE winning_player = 1
                         AND game_format.name IN ("CEDH", "EDH")
                     ) `total_games` ON 1 = 1            
-                    
+
                 WHERE commander.id IS NOT NULL                    
                 GROUP BY commander.id, commander.name
                 HAVING win_ratio > 0

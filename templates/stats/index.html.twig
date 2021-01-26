@@ -13,10 +13,10 @@
         var deck_overall_data = { {% for rank in deck_overall_ranks %}"{{rank.name}}":{"Name":"{{rank.name}}","WinRatio":{{rank.win_ratio}},"NumWins":{{rank.num_wins}}},{% endfor %} }
 
         var color_data = { {% for rank in color_ranks %}"{{rank.name}}":{"Name":"{{rank.name}}","WinRatio":{{rank.win_ratio}},"NumWins":{{rank.num_wins}},"NumGames":{{rank.num_games}} },{% endfor %} }
-        var color_overall_data = { {% for rank in color_overall_ranks %}{{rank.name}}:{"Name":"{{rank.name}}","WinRatio":{{rank.win_ratio}},"NumWins":{{rank.num_wins}}},{% endfor %} }
+        var color_overall_data = { {% for rank in color_overall_ranks %}"{{rank.name}}":{"Name":"{{rank.name}}","WinRatio":{{rank.win_ratio}},"NumWins":{{rank.num_wins}}},{% endfor %} }
 
-        var commander_data = { {% for rank in commander_ranks %}"{{rank.name}}":{"Name":"{{rank.name}}","WinRatio":{{rank.win_ratio}},"NumWins":{{rank.num_wins}},"NumGames":{{rank.num_games}} },{% endfor %} }
-        var commander_overall_data = { {% for rank in commander_overall_ranks %}"{{rank.name}}":{"Name":"{{rank.name}}","WinRatio":{{rank.win_ratio}},"NumWins":{{rank.num_wins}}},{% endfor %} }
+        var commander_data = { {% for rank in commander_ranks %}"{{rank.name|raw }}":{"Name":"{{rank.name|raw}}","WinRatio":{{rank.win_ratio}},"NumWins":{{rank.num_wins}},"NumGames":{{rank.num_games}} },{% endfor %} }
+        var commander_overall_data = { {% for rank in commander_overall_ranks %}"{{rank.name|raw}}":{"Name":"{{rank.name|raw}}","WinRatio":{{rank.win_ratio}},"NumWins":{{rank.num_wins}}},{% endfor %} }
 
     </script>
 

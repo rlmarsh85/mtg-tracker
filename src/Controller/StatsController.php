@@ -32,7 +32,7 @@ class StatsController extends AbstractController
         $deck_overall_ranks = $gameRepo->findDeckOverallRanks(10);
 
         $color_ranks = $gameRepo->findColorRanks();
-        $color_overall_ranks = $gameRepo->findColorOverallRanks();
+        $color_overall_ranks = $gameRepo->findColorOverallRanks(10);
 
         $commander_ranks = $gameRepo->findCommanderRanks(5);
         $commander_overall_ranks = $gameRepo->findCommanderOverallRanks(10);        
