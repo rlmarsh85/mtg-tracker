@@ -18,6 +18,8 @@
         var commander_data = { {% for rank in commander_ranks %}"{{rank.name|raw }}":{"Name":"{{rank.name|raw}}","WinRatio":{{rank.win_ratio}},"NumWins":{{rank.num_wins}},"NumGames":{{rank.num_games}} },{% endfor %} }
         var commander_overall_data = { {% for rank in commander_overall_ranks %}"{{rank.name|raw}}":{"Name":"{{rank.name|raw}}","WinRatio":{{rank.win_ratio}},"NumWins":{{rank.num_wins}}},{% endfor %} }
 
+        var most_popular_decks = { {%for rank in most_popular_decks %} "{{rank.name|raw}}": {  "Name":"{{rank.name|raw}}","NumPlays":{{rank.num_plays}}       },    {% endfor %}   }
+
     </script>
 
     {{ encore_entry_script_tags('stats') }}

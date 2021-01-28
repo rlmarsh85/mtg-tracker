@@ -456,4 +456,31 @@ class GameRepository extends ServiceEntityRepository
         return $count;            
     }
 
+    public function findMostPopularDecks($limit=-1, $formats=null): array
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $format_ids = $this->resolveFormat($formats);
+
+        $sql = '
+            SELECT deck.id, deck.name, COUNT(game_player.id) `num_plays` FROM 
+            game
+            LEFT JOIN game_player
+            ON game_player.game_id = game.id
+            LEFT JOIN deck
+            ON deck.id = game_player.deck_id
+            WHERE game.format_id IN (' . $this->constructFormatIds($format_ids) . ')
+            GROUP BY deck.id
+            ORDER BY num_plays DESC        
+        ';
+
+        $sql .= ($limit == -1) ? "" : (" LIMIT " . $limit);
+        
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+
+        // returns an array of arrays (i.e. a raw data set)
+        return $stmt->fetchAllAssociative();
+
+    }
+
 }
