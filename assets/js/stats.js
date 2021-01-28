@@ -79,7 +79,7 @@ function updateBarChart(data, svg, float_div, title){
   .style("text-anchor", "left")
   .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
   
-  var x = d3.scaleBand().padding(0.1),
+  var x = d3.scaleBand().padding(0.1);
   y = d3.scaleLinear();  
 
   var g = svg.append("g")
@@ -99,11 +99,13 @@ function updateBarChart(data, svg, float_div, title){
     .attr("text-anchor", "end")
     .text("Win Ratio");
 
+ // g.selectAll("text")
+  //  .attr("style", "font-size:25px");
 
   x.rangeRound([15, width]);
   y.rangeRound([height, 0]);
 
-  x.domain(Object.values(data).map(function(item) { return item.Name; } ));
+  x.domain(Object.values(data).map(function(item) { return item.Name ; } ));
 
   g.select(".axis--x")
   .attr("transform", "translate(0," + height + ")")
@@ -247,11 +249,17 @@ function updatePieChart(data, svg, float_div, title) {
   
   var legendOrdinal = d3legend.legendColor()
   .shape("path", d3.symbol().type(d3.symbolSquare).size(150)())
-  .shapePadding(10)
-  .scale(ordinal);
+  .shapePadding(20)
+  .scale(ordinal)
+  .labelWrap(150)
+  .labelAlign("start");
 
   svg.select(".legendOrdinal")
   .call(legendOrdinal);
+
+
+  //svg.select(".legendOrdinal")
+  //.call(legendSize);
 
   svg.select(".legendOrdinal").selectAll(".swatch")
   .attr("class", function(d){ return "swatch " + resolveColor(d)} );  

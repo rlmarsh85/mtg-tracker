@@ -19,12 +19,68 @@ class GameRepository extends ServiceEntityRepository
         parent::__construct($registry, Game::class);
     }
 
+
+
+    private function resolveFormat($formats) : array
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $ids = [];
+        $sql = '
+            SELECT game_format.id FROM game_format
+        ';
+        $where_clause = "";
+        if($formats != null && !empty($formats)){
+
+            $where_clause = " WHERE game_format.name IN(";
+            $c = count($formats);
+            $i = 0;
+            while($i < $c){
+                $where_clause .= "\"" . $formats[$i] . "\""  
+                . (($i == $c - 1) ? "" : ",");
+                $i++;
+            }
+
+            $where_clause .= ")";
+
+
+
+        }
+
+        $stmt = $conn->prepare($sql . $where_clause);
+        $stmt->execute();    
+        $results = $stmt->fetchAllAssociative();
+
+        foreach($results as $result){
+            $ids[] = $result['id'];
+        }        
+
+        return $ids;
+        
+    }
+
+    private function constructFormatIds($ids) : string
+    {
+        $str = "";
+        $c = count($ids);
+        $i = 0;
+        while($i < $c){
+            $str .= $ids[$i] 
+            . (($i == $c - 1) ? "" : ",");
+            $i++;
+        }        
+
+        return $str;
+    }
+
     /**
      * Gets each players win rate, i.e. percent of games won of all games which that player played in
      */
-    public function findPlayerRanks($limit=-1): array
+    public function findPlayerRanks($limit=-1, $formats=null): array
     {
+
         $conn = $this->getEntityManager()->getConnection();
+
+        $format_ids = $this->resolveFormat($formats);
 
         $sql = '
             SELECT player.id, player.name, COUNT(game_id) `num_games`, SUM(winning_player) `num_wins`,
@@ -32,6 +88,9 @@ class GameRepository extends ServiceEntityRepository
             FROM player
             LEFT JOIN game_player
             ON game_player.player_id = player.id
+            LEFT JOIN game
+            ON game.id = game_player.game_id
+            WHERE game.format_id IN (' . $this->constructFormatIds($format_ids) . ')
             GROUP BY player.id, player.name
             HAVING `num_wins` > 0
             ORDER BY win_ratio DESC            
@@ -48,9 +107,10 @@ class GameRepository extends ServiceEntityRepository
     /**
      * Gets player's overall win rate, i.e. percent of games won out of ALL games played
      */
-    public function findPlayerOverallRanks($limit=-1): array
+    public function findPlayerOverallRanks($limit=-1, $formats=null): array
     {
         $conn = $this->getEntityManager()->getConnection();
+        $format_ids = $this->resolveFormat($formats);
 
         $sql = '
             SELECT 
@@ -59,8 +119,18 @@ class GameRepository extends ServiceEntityRepository
             FROM player
             LEFT JOIN game_player
             ON game_player.player_id = player.id
+            LEFT JOIN game
+            ON game.id = game_player.game_id
             LEFT JOIN 
-                (SELECT COUNT(id) c FROM game_player WHERE winning_player = 1) total_games ON 1 = 1
+                (SELECT COUNT(game_player.id) c 
+                FROM game_player 
+                LEFT JOIN game 
+                ON game.id = game_player.game_id 
+                WHERE winning_player = 1 
+                AND game.format_id IN (' . $this->constructFormatIds($format_ids) . ')
+            ) total_games ON 1 = 1
+
+            WHERE game.format_id IN (' . $this->constructFormatIds($format_ids) . ')
             GROUP BY player.id, player.name
             HAVING `num_wins` > 0
             ORDER BY win_ratio DESC            
@@ -77,9 +147,10 @@ class GameRepository extends ServiceEntityRepository
     /**
      * Gets the win rate of each deck, i.e. percent of games won of all games which that deck was played
      */
-    public function findDeckRanks($limit=-1): array
+    public function findDeckRanks($limit=-1, $formats=null): array
     {
         $conn = $this->getEntityManager()->getConnection();
+        $format_ids = $this->resolveFormat($formats);
 
         $sql = '
             SELECT deck.id, deck.name, COUNT(game_id) `num_games`, SUM(winning_player) `num_wins`, 
@@ -87,7 +158,10 @@ class GameRepository extends ServiceEntityRepository
             FROM deck
             LEFT JOIN game_player
             ON game_player.deck_id = deck.id
-            GROUP BY deck.id, deck.name
+            LEFT JOIN game
+            ON game.id = game_player.game_id
+            WHERE game.format_id IN (' . $this->constructFormatIds($format_ids) . ')
+            GROUP BY deck.id, deck.name            
             HAVING num_wins > 0
             ORDER BY win_ratio DESC            
             ';
@@ -103,9 +177,10 @@ class GameRepository extends ServiceEntityRepository
     /**
      * Gets decks overall win rate, i.e. percent of games won of ALL games played.
      */
-    public function findDeckOverallRanks($limit=-1): array
+    public function findDeckOverallRanks($limit=-1, $formats=null): array
     {
         $conn = $this->getEntityManager()->getConnection();
+        $format_ids = $this->resolveFormat($formats);
 
         $sql = '
             SELECT deck.id, deck.name, COUNT(game_id) `num_games`, SUM(winning_player) `num_wins`, 
@@ -113,8 +188,19 @@ class GameRepository extends ServiceEntityRepository
             FROM deck
             LEFT JOIN game_player
             ON game_player.deck_id = deck.id
+            LEFT JOIN game
+            ON game.id = game_player.game_id
+
             LEFT JOIN 
-                (SELECT COUNT(id) c FROM game_player WHERE winning_player = 1) total_games ON 1 = 1            
+                (SELECT COUNT(game_player.id) c 
+                FROM game_player 
+                LEFT JOIN game 
+                ON game.id = game_player.game_id 
+                WHERE winning_player = 1 
+                AND game.format_id IN (' . $this->constructFormatIds($format_ids) . ')
+            ) total_games ON 1 = 1
+
+            WHERE game.format_id IN (' . $this->constructFormatIds($format_ids) . ')          
             GROUP BY deck.id, deck.name
             HAVING num_wins > 0
             ORDER BY win_ratio DESC 
@@ -135,9 +221,10 @@ class GameRepository extends ServiceEntityRepository
      * This is also confusing because if two players are playing decks with the same color,
      * then the match is still counted as a win for the color.
      */
-    public function findColorOverallRanks($limit = -1): array
+    public function findColorOverallRanks($limit = -1, $formats=null): array
     {
         $conn = $this->getEntityManager()->getConnection();
+        $format_ids = $this->resolveFormat($formats);
 
         $sql = '
             SELECT deck.name, COUNT(DISTINCT game_player.game_id) `num_games`, SUM(winning_player) `num_wins`, 
@@ -154,8 +241,20 @@ class GameRepository extends ServiceEntityRepository
             ) `deck`
             LEFT JOIN game_player
             ON game_player.deck_id = deck.id
+
+            LEFT JOIN game
+            ON game.id = game_player.game_id
+
             LEFT JOIN 
-                (SELECT COUNT(id) c FROM game) total_games ON 1 = 1            
+                (SELECT COUNT(game_player.id) c 
+                FROM game_player 
+                LEFT JOIN game 
+                ON game.id = game_player.game_id 
+                WHERE winning_player = 1 
+                AND game.format_id IN (' . $this->constructFormatIds($format_ids) . ')
+            ) total_games ON 1 = 1 
+
+            WHERE game.format_id IN (' . $this->constructFormatIds($format_ids) . ')      
             GROUP BY `deck`.name
             HAVING num_wins IS NOT NULL AND num_wins > 0            
             ORDER BY win_ratio DESC
@@ -175,9 +274,10 @@ class GameRepository extends ServiceEntityRepository
      * deck can and usually does represent more than one color. May not actually be appropriate to
      * display as a pie chart ...
      */
-    public function findColorRanks(): array
+    public function findColorRanks($formats=null): array
     {
         $conn = $this->getEntityManager()->getConnection();
+        $format_ids = $this->resolveFormat($formats);
 
         $sql = '
             SELECT color.id, color.name, COUNT(game_player.id) `num_games`, SUM(winning_player) `num_wins`, 
@@ -189,6 +289,9 @@ class GameRepository extends ServiceEntityRepository
             ON decks_colors.deck_id = deck.id
             LEFT JOIN color
             ON color.id = decks_colors.color_id  
+            LEFT JOIN game
+            ON game.id = game_player.game_id
+            WHERE game.format_id IN (' . $this->constructFormatIds($format_ids) . ')    
             GROUP BY color.id, color.name
             HAVING num_wins > 0
             ORDER BY win_ratio DESC    
@@ -275,13 +378,15 @@ class GameRepository extends ServiceEntityRepository
         return $stmt->fetchAllAssociative();
     }    
     
-    public function findTotalNumberGames(): int
+    public function findTotalNumberGames($formats=null): int
     {
         $conn = $this->getEntityManager()->getConnection();
+        $format_ids = $this->resolveFormat($formats);
 
         $sql = '
             SELECT COUNT(id) `count`
             FROM game
+            WHERE game.format_id IN (' . $this->constructFormatIds($format_ids) . ') 
             ';
 
         $stmt = $conn->prepare($sql);
@@ -291,13 +396,15 @@ class GameRepository extends ServiceEntityRepository
         return $count;
     } 
     
-    public function findAverageGameLength(): float
+    public function findAverageGameLength($formats=null): float
     {
         $conn = $this->getEntityManager()->getConnection();
+        $format_ids = $this->resolveFormat($formats);
 
         $sql = '
             SELECT AVG(number_turns) `number_turns`
             FROM game
+            WHERE game.format_id IN (' . $this->constructFormatIds($format_ids) . ')
             ';
 
         $stmt = $conn->prepare($sql);
@@ -307,15 +414,17 @@ class GameRepository extends ServiceEntityRepository
         return $count;        
     }
 
-    public function findPercentWonWithSolRing(): float
+    public function findPercentWonWithSolRing($formats=null): float
     {
         $conn = $this->getEntityManager()->getConnection();
+        $format_ids = $this->resolveFormat($formats);
 
         $sql = '
             SELECT SUM(IF((winning_player + first_or_second_turn_sol_ring) = 2,1,0)) / COUNT(DISTINCT game.id)
             FROM game
             LEFT JOIN game_player
             ON game_player.game_id = game.id
+            WHERE game.format_id IN (' . $this->constructFormatIds($format_ids) . ')
             ';
 
         $stmt = $conn->prepare($sql);
