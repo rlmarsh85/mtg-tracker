@@ -43,7 +43,22 @@ jQuery(document).ready(function() {
     .attr("class", "tooltip-bars")
     .style("opacity", 0);    
 
-    updateBarChart(player_data, bar_svg, bar_div, $('#bar-win-rate-player').text() ); 
+    //updateBarChart(player_data, bar_svg, bar_div, $('#bar-win-rate-player').text() ); 
+    
+    updateBarChart(
+      most_popular_decks, 
+      bar_svg, bar_div, 
+      "Most Popular Deck", 
+      function(d){ return d.NumPlays}, 
+      function(d){ return d.NumPlays},
+      function(data){ 
+        var max = (Math.max.apply(Math, Object.values(data).map(function(o) { return o.NumPlays; })));
+        max = (max < 10) ? 10: max;
+        return [0, max];
+      },
+      10,
+      "s"
+    ); 
 
 
     /**
@@ -55,14 +70,14 @@ jQuery(document).ready(function() {
     $('#pie-wins-by-deck').on('click', function(){ updatePieChart(deck_overall_data, pie_svg, pie_div, this.innerHTML ) });
     $('#pie-wins-by-commander').on('click', function(){ updatePieChart(commander_overall_data, pie_svg, pie_div, this.innerHTML ) });
 
-    $('#bar-win-rate-player').on('click', function(){ updateBarChart(player_data, bar_svg, bar_div, this.innerHTML ) });
+    $('#bar-win-rate-player').on('click', function(){ updateBarChart(player_data, bar_svg, bar_div, this.innerHTML, function(d){ return d.WinRatio},function(d){ return d.NumWins}, function(data){ return [0,100]},20,"%" ) });
     $('#bar-win-rate-color').on('click', function(){ updateBarChart(color_data, bar_svg, bar_div, this.innerHTML ) });    
     $('#bar-win-rate-deck').on('click', function(){ updateBarChart(deck_data, bar_svg, bar_div, this.innerHTML ) });
     $('#bar-win-rate-commander').on('click', function(){ updateBarChart(commander_data, bar_svg, bar_div, this.innerHTML ) });
 
 });
 
-function updateBarChart(data, svg, float_div, title){
+function updateBarChart(data, svg, float_div, title, dataReturnFunc, floatReturnFunc, domainFunc, numTicks, tickFormat){
 
   var width = 450;
   var height = 450;
@@ -79,8 +94,18 @@ function updateBarChart(data, svg, float_div, title){
   .style("text-anchor", "left")
   .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
   
-  var x = d3.scaleBand().padding(0.1);
-  y = d3.scaleLinear();  
+  var x = d3.scaleBand()
+    .padding(0.1)
+    .rangeRound([15, width])
+    .domain(Object.values(data).map(function(item) { return item.Name ; } ));
+
+  console.log(domainFunc(data));
+  y = d3.scaleLinear()
+      .rangeRound([height, 0]);
+  
+  if(tickFormat == "s"){
+    y.domain(domainFunc(data))
+  }
 
   var g = svg.append("g")
     .attr("transform", "translate(" + margin.left + "," + (margin.top * 2) + ")");
@@ -99,22 +124,19 @@ function updateBarChart(data, svg, float_div, title){
     .attr("text-anchor", "end")
     .text("Win Ratio");
 
- // g.selectAll("text")
-  //  .attr("style", "font-size:25px");
-
-  x.rangeRound([15, width]);
-  y.rangeRound([height, 0]);
-
-  x.domain(Object.values(data).map(function(item) { return item.Name ; } ));
 
   g.select(".axis--x")
   .attr("transform", "translate(0," + height + ")")
   .call(d3.axisBottom(x));
 
   g.select(".axis--y")
-    .call(d3.axisLeft(y).ticks(20, "%"));
+    .call(d3.axisLeft(y).ticks(numTicks, tickFormat));
 
-  y.domain([0, 100]);
+  if(tickFormat == "%"){
+    y.domain(domainFunc(data))
+  }    
+
+
 
   var bars = g.selectAll(".bar")
     .data(Object.values(data));
@@ -127,12 +149,12 @@ function updateBarChart(data, svg, float_div, title){
     .enter().append("rect")
     .attr("class", function(d){ var color=resolveColor(d.Name); return  color + " bar"})
     .attr("x", function (d) { return x(d.Name); })
-    .attr("y", function (d) { return y(d.WinRatio); })
+    .attr("y", function (d) { return y(dataReturnFunc(d)); })
     .attr("width", x.bandwidth())
-    .attr("height", function (d) { return height - y(d.WinRatio); });
+    .attr("height", function (d) { return height - y(dataReturnFunc(d)); });
 
   
-  addHoverEffect(svg,".bar",float_div, function(d){ return d.NumWins});
+  addHoverEffect(svg,".bar",float_div, function(d){ return floatReturnFunc(d)});
 
   addDataTable('bar_chart_placeholder',dataTableClassName,data);
 
