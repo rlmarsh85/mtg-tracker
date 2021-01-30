@@ -19,6 +19,7 @@
         var commander_overall_data = { {% for rank in commander_overall_ranks %}"{{rank.name|raw}}":{"Name":"{{rank.name|raw}}","WinRatio":{{rank.win_ratio}},"NumWins":{{rank.num_wins}}},{% endfor %} }
 
         var most_popular_decks = { {%for rank in most_popular_decks %} "{{rank.name|raw}}": {  "Name":"{{rank.name|raw}}","NumPlays":{{rank.num_plays}}       },    {% endfor %}   }
+        var most_popular_commanders = { {%for rank in most_popular_commanders %} "{{rank.name|raw}}": {  "Name":"{{rank.name|raw}}","NumPlays":{{rank.num_plays}}       },    {% endfor %}   }
 
     </script>
 
@@ -98,6 +99,9 @@
             <br />  
             <button id ="bar-win-rate-deck">Win Rate by Deck</button>
             <button id ="bar-win-rate-commander">Win Rate by Commander</button>
+            <br />
+            <button id ="bar-popular-decks">Most Played Decks</button>
+            <button id ="bar-popular-commanders">Most Played Commanders</button>
         </div>
         <div id="bar_chart_placeholder"></div>
     </div>

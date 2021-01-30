@@ -42,24 +42,8 @@ jQuery(document).ready(function() {
     var bar_div = d3.select("body").append("div")
     .attr("class", "tooltip-bars")
     .style("opacity", 0);    
-
-    //updateBarChart(player_data, bar_svg, bar_div, $('#bar-win-rate-player').text() ); 
-    
-    updateBarChart(
-      most_popular_decks, 
-      bar_svg, bar_div, 
-      "Most Popular Deck", 
-      function(d){ return d.NumPlays}, 
-      function(d){ return d.NumPlays},
-      function(data){ 
-        var max = (Math.max.apply(Math, Object.values(data).map(function(o) { return o.NumPlays; })));
-        max = (max < 10) ? 10: max;
-        return [0, max];
-      },
-      10,
-      "s"
-    ); 
-
+ 
+    updateBarChartPercent(player_data, "Players By Win Rate", bar_svg, bar_div)
 
     /**
      * 
@@ -70,14 +54,53 @@ jQuery(document).ready(function() {
     $('#pie-wins-by-deck').on('click', function(){ updatePieChart(deck_overall_data, pie_svg, pie_div, this.innerHTML ) });
     $('#pie-wins-by-commander').on('click', function(){ updatePieChart(commander_overall_data, pie_svg, pie_div, this.innerHTML ) });
 
-    $('#bar-win-rate-player').on('click', function(){ updateBarChart(player_data, bar_svg, bar_div, this.innerHTML, function(d){ return d.WinRatio},function(d){ return d.NumWins}, function(data){ return [0,100]},20,"%" ) });
-    $('#bar-win-rate-color').on('click', function(){ updateBarChart(color_data, bar_svg, bar_div, this.innerHTML ) });    
-    $('#bar-win-rate-deck').on('click', function(){ updateBarChart(deck_data, bar_svg, bar_div, this.innerHTML ) });
-    $('#bar-win-rate-commander').on('click', function(){ updateBarChart(commander_data, bar_svg, bar_div, this.innerHTML ) });
+    $('#bar-win-rate-player').on('click', function(){ updateBarChartPercent(player_data, this.innerHTML, bar_svg, bar_div) });
+    $('#bar-win-rate-color').on('click', function(){ updateBarChartPercent(color_data, this.innerHTML, bar_svg, bar_div) });
+    $('#bar-win-rate-deck').on('click', function(){ updateBarChartPercent(deck_data, this.innerHTML, bar_svg, bar_div) });
+    $('#bar-win-rate-commander').on('click', function(){ updateBarChartPercent(commander_data, this.innerHTML, bar_svg, bar_div) });
+
+    $('#bar-popular-decks').on('click', function(){ updateBarChartRaw(most_popular_decks, this.innerHTML, bar_svg, bar_div) });
+    $('#bar-popular-commanders').on('click', function(){ updateBarChartRaw(most_popular_commanders, this.innerHTML, bar_svg, bar_div) });
 
 });
 
-function updateBarChart(data, svg, float_div, title, dataReturnFunc, floatReturnFunc, domainFunc, numTicks, tickFormat){
+function updateBarChartRaw(data, title, svg, div){
+  
+  updateBarChart(
+    data, 
+    svg, 
+    div, 
+    title,
+    function(d){ return d.NumPlays}, 
+    function(d){ return d.NumPlays},
+    function(data){ 
+      var max = (Math.max.apply(Math, Object.values(data).map(function(o) { return o.NumPlays; })));
+      max = (max < 10) ? 10: max;
+      return [0, max];
+    },
+    10,
+    "s",
+    "Number Plays"
+  );       
+}
+
+function updateBarChartPercent(data, title, svg, div){
+  updateBarChart(
+    data, 
+    svg, 
+    div, 
+    title, 
+    function(d){ return d.WinRatio},
+    function(d){ return d.NumWins}, 
+    function(data){ return [0,100]},
+    20,
+    "%",
+    "Win Ratio" 
+  );
+
+}
+
+function updateBarChart(data, svg, float_div, title, dataReturnFunc, floatReturnFunc, domainFunc, numTicks, tickFormat, yLabel){
 
   var width = 450;
   var height = 450;
@@ -99,7 +122,6 @@ function updateBarChart(data, svg, float_div, title, dataReturnFunc, floatReturn
     .rangeRound([15, width])
     .domain(Object.values(data).map(function(item) { return item.Name ; } ));
 
-  console.log(domainFunc(data));
   y = d3.scaleLinear()
       .rangeRound([height, 0]);
   
@@ -122,7 +144,7 @@ function updateBarChart(data, svg, float_div, title, dataReturnFunc, floatReturn
     .attr("y", 6)
     .attr("dy", "0.71em")
     .attr("text-anchor", "end")
-    .text("Win Ratio");
+    .text(yLabel);
 
 
   g.select(".axis--x")

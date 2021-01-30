@@ -45,6 +45,7 @@ class StatsController extends AbstractController
         $player_game_stats = $gameRepo->findPlayersGameStats();
 
         $most_popular_decks = $gameRepo->findMostPopularDecks(5,["EDH", "CEDH"]);
+        $most_popular_commanders = $gameRepo->findMostPopularCommanders(5);
 
         return $this->render('stats/index.html.twig', [
             'player_ranks' => $player_ranks,
@@ -61,7 +62,8 @@ class StatsController extends AbstractController
             'avg_game_length_edh' => $avg_game_length_edh,
             'percent_sol_wins' => $percent_sol_wins,
             'player_game_stats' => $player_game_stats,
-            'most_popular_decks' => $most_popular_decks
+            'most_popular_decks' => $most_popular_decks,
+            'most_popular_commanders' => $most_popular_commanders
 
         ]);
     }

@@ -483,4 +483,33 @@ class GameRepository extends ServiceEntityRepository
 
     }
 
+    public function findMostPopularCommanders($limit=-1) : array
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = '
+            SELECT commander.id, commander.name, COUNT(game_player.id) `num_plays` 
+                FROM game
+                LEFT JOIN game_player
+                ON game_player.game_id = game.id
+                LEFT JOIN deck
+                ON deck.id = game_player.deck_id
+                LEFT JOIN commanders_decks
+                ON commanders_decks.deck_id = deck.id
+                LEFT JOIN commander
+                ON commander.id = commanders_decks.commander_id
+                WHERE game.format_id IN (63,64)
+                GROUP BY commander.id
+                ORDER BY num_plays DESC       
+        ';
+
+        $sql .= ($limit == -1) ? "" : (" LIMIT " . $limit);
+        
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+
+        // returns an array of arrays (i.e. a raw data set)
+        return $stmt->fetchAllAssociative();        
+    }
+
 }
