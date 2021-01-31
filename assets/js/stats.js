@@ -102,6 +102,20 @@ function updateBarChartPercent(data, title, svg, div){
 
 }
 
+function splitName(d){
+
+  var el = d3.select(this);
+  var words = d.match(/.{1,15}/g)
+  el.text('');
+
+  for (var i = 0; i < words.length; i++) {
+      var tspan = el.append('tspan').text(words[i] + ((i == (words.length - 1)) ? "" : "-") );
+      if (i > 0)
+          tspan.attr('x', 0).attr('dy', '15');
+  }
+    
+}
+
 function updateBarChart(data, svg, float_div, title, dataReturnFunc, floatReturnFunc, domainFunc, numTicks, tickFormat, yLabel){
 
   var width = 450;
@@ -123,6 +137,8 @@ function updateBarChart(data, svg, float_div, title, dataReturnFunc, floatReturn
     .padding(0.1)
     .rangeRound([15, width])
     .domain(Object.values(data).map(function(item) { return item.Name ; } ));
+
+  
 
   y = d3.scaleLinear()
       .rangeRound([height, 0]);
@@ -151,7 +167,10 @@ function updateBarChart(data, svg, float_div, title, dataReturnFunc, floatReturn
 
   g.select(".axis--x")
   .attr("transform", "translate(0," + height + ")")
-  .call(d3.axisBottom(x));
+  .call(d3.axisBottom(x))
+  
+  .call(g => g.selectAll(".tick text").each(splitName)) 
+  
 
   g.select(".axis--y")
     .call(d3.axisLeft(y).ticks(numTicks, tickFormat));
@@ -163,7 +182,7 @@ function updateBarChart(data, svg, float_div, title, dataReturnFunc, floatReturn
 
 
   var bars = g.selectAll(".bar")
-    .data(Object.values(data));
+    .data(Object.values(data))
     
   // ENTER    
 
@@ -302,10 +321,6 @@ function updatePieChart(data, svg, float_div, title) {
 
   svg.select(".legendOrdinal")
   .call(legendOrdinal);
-
-
-  //svg.select(".legendOrdinal")
-  //.call(legendSize);
 
   svg.select(".legendOrdinal").selectAll(".swatch")
   .attr("class", function(d){ return "swatch " + resolveColor(d)} );  
