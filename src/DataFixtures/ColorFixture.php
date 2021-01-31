@@ -5,8 +5,9 @@ namespace App\DataFixtures;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use App\Entity\Color;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 
-class ColorFixture extends Fixture
+class ColorFixture extends Fixture implements FixtureGroupInterface
 {
     public function load(ObjectManager $manager)
     {
@@ -20,4 +21,9 @@ class ColorFixture extends Fixture
 
       $manager->flush();
     }
+
+    public static function getGroups(): array
+    {
+        return ['static'];
+    }        
 }

@@ -5,8 +5,9 @@ namespace App\DataFixtures;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use App\Entity\GameFormat;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 
-class GameFormatFixtures extends Fixture
+class GameFormatFixtures extends Fixture implements FixtureGroupInterface
 {
     public function load(ObjectManager $manager)
     {
@@ -27,4 +28,9 @@ class GameFormatFixtures extends Fixture
 
         $manager->flush();
     }
+
+    public static function getGroups(): array
+    {
+        return ['static'];
+    }        
 }

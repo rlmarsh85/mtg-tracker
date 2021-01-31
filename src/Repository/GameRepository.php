@@ -227,18 +227,21 @@ class GameRepository extends ServiceEntityRepository
         $format_ids = $this->resolveFormat($formats);
 
         $sql = '
-            SELECT deck.name, COUNT(DISTINCT game_player.game_id) `num_games`, SUM(winning_player) `num_wins`, 
-            ROUND(( SUM(winning_player) / total_games.c * 100  ),2) `win_ratio`            
+            SELECT IF(color_identity.combo_name IS NOT NULL, color_identity.combo_name, deck.name) `name`, 
+            COUNT(DISTINCT game_player.game_id) `num_games`, SUM(winning_player) `num_wins`, 
+            ROUND(( SUM(winning_player) / total_games.c * 100  ),2) `win_ratio` 
             
             FROM 
             (
                 SELECT deck.id, 
-                IF( GROUP_CONCAT(color.name SEPARATOR  \'/\') = "Blue/Black/Green/Red/White", "5 color", GROUP_CONCAT(color.name SEPARATOR  \'/\') )  `name`
+                GROUP_CONCAT(color.name ORDER BY color.name SEPARATOR  \'/\' ) `name`
                 FROM deck 
                 LEFT JOIN decks_colors ON deck.id = decks_colors.deck_id 
                 LEFT JOIN color ON color.id = decks_colors.color_id 
                 GROUP BY deck.id
             ) `deck`
+            LEFT JOIN color_identity
+            ON deck.name = color_identity.color_combo
             LEFT JOIN game_player
             ON game_player.deck_id = deck.id
 
@@ -251,10 +254,10 @@ class GameRepository extends ServiceEntityRepository
                 LEFT JOIN game 
                 ON game.id = game_player.game_id 
                 WHERE winning_player = 1 
-                AND game.format_id IN (' . $this->constructFormatIds($format_ids) . ')
+                AND game.format_id IN (' . $this->constructFormatIds($format_ids) . ')  
             ) total_games ON 1 = 1 
 
-            WHERE game.format_id IN (' . $this->constructFormatIds($format_ids) . ')      
+            WHERE game.format_id IN (' . $this->constructFormatIds($format_ids) . ')       
             GROUP BY `deck`.name
             HAVING num_wins IS NOT NULL AND num_wins > 0            
             ORDER BY win_ratio DESC
