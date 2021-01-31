@@ -92,3 +92,27 @@ div.tooltip-bars, div.tooltip-pie {
 .form-field input{
   margin-left:20px;
 }
+
+
+.GameType_GamePlayers-collection-action{
+  display:contents;
+  font-size:24px;
+}
+
+.text-center{
+  letter-spacing:24px;
+}
+
+.col-md-3{
+  display:block;
+  float:left;
+  margin:10px 50px 20px 0px;
+  border:1px solid gray;
+  padding:10px;
+  min-width:300px;
+}
+
+#GameType_save{
+  float:left;
+  clear:both;
+}

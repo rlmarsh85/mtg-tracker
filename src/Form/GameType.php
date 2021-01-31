@@ -40,7 +40,7 @@ class GameType extends AbstractType
             ->add('NumberTurns')          
             ->add('GamePlayers', CollectionType::class, [
                 'entry_type'   => GamePlayerType::class,
-                'label'        => 'List players.',
+                'label'        => 'Players Info:',
                 'allow_add'    => true,
                 'allow_delete' => true,
                 'prototype'    => true,
