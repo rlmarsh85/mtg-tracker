@@ -512,4 +512,59 @@ class GameRepository extends ServiceEntityRepository
         return $stmt->fetchAllAssociative();        
     }
 
+
+    public function findMostPopularColors($formats=null): array
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $format_ids = $this->resolveFormat($formats);
+
+        $sql = '
+            SELECT color.id, color.name, COUNT(game_player.id) `num_plays` 
+                FROM game
+                LEFT JOIN game_player
+                ON game_player.game_id = game.id
+                LEFT JOIN deck
+                ON deck.id = game_player.deck_id
+                LEFT JOIN decks_colors
+                ON decks_colors.deck_id = deck.id
+                LEFT JOIN color
+                ON color.id = decks_colors.color_id
+                WHERE game.format_id IN (' . $this->constructFormatIds($format_ids) . ')
+                GROUP BY color.id
+                ORDER BY num_plays DESC      
+        ';
+        
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+
+        // returns an array of arrays (i.e. a raw data set)
+        return $stmt->fetchAllAssociative();
+
+    }   
+    
+    public function findMostRampedPlayers($formats=null): array
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $format_ids = $this->resolveFormat($formats);
+
+        $sql = '
+            SELECT player.id, player.name, SUM(game_player.first_or_second_turn_sol_ring) `num_ramps`
+            FROM game
+            LEFT JOIN game_player
+            ON game.id = game_player.game_id
+            LEFT JOIN player
+            ON player.id = game_player.player_id
+            WHERE game.format_id IN (' . $this->constructFormatIds($format_ids) . ')
+            GROUP BY player.id
+            ORDER BY num_ramps DESC   
+        ';
+        
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+
+        // returns an array of arrays (i.e. a raw data set)
+        return $stmt->fetchAllAssociative();
+
+    }      
+
 }

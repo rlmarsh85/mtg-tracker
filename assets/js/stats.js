@@ -61,26 +61,28 @@ jQuery(document).ready(function() {
 
     $('#bar-popular-decks').on('click', function(){ updateBarChartRaw(most_popular_decks, this.innerHTML, bar_svg, bar_div) });
     $('#bar-popular-commanders').on('click', function(){ updateBarChartRaw(most_popular_commanders, this.innerHTML, bar_svg, bar_div) });
-
+    $('#bar-popular-colors').on('click', function(){ updateBarChartRaw(most_popular_colors, this.innerHTML, bar_svg, bar_div) });
+    $('#bar-ramped_players').on('click', function(){ updateBarChartRaw(most_ramped_players, this.innerHTML, bar_svg, bar_div,"Number Ramps",function(d){ return d.NumRamps} ) });
+    
 });
 
-function updateBarChartRaw(data, title, svg, div){
-  
+function updateBarChartRaw(data, title, svg, div,yLabel="Number Plays",dataReturnFunc=function(d){ return d.NumPlays}){
+
   updateBarChart(
     data, 
     svg, 
     div, 
     title,
-    function(d){ return d.NumPlays}, 
-    function(d){ return d.NumPlays},
+    dataReturnFunc, 
+    dataReturnFunc,
     function(data){ 
-      var max = (Math.max.apply(Math, Object.values(data).map(function(o) { return o.NumPlays; })));
+      var max = (Math.max.apply(Math, Object.values(data).map(function(o) { return dataReturnFunc(o); })));
       max = (max < 10) ? 10: max;
       return [0, max];
     },
     10,
     "s",
-    "Number Plays"
+    yLabel
   );       
 }
 

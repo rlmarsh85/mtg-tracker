@@ -20,6 +20,9 @@
 
         var most_popular_decks = { {%for rank in most_popular_decks %} "{{rank.name|raw}}": {  "Name":"{{rank.name|raw}}","NumPlays":{{rank.num_plays}}       },    {% endfor %}   }
         var most_popular_commanders = { {%for rank in most_popular_commanders %} "{{rank.name|raw}}": {  "Name":"{{rank.name|raw}}","NumPlays":{{rank.num_plays}}       },    {% endfor %}   }
+        var most_popular_colors = { {%for rank in most_popular_colors %} "{{rank.name|raw}}": {  "Name":"{{rank.name|raw}}","NumPlays":{{rank.num_plays}}       },    {% endfor %}   }
+
+        var most_ramped_players = { {%for rank in most_ramped_players %} "{{rank.name|raw}}": {  "Name":"{{rank.name|raw}}","NumRamps":{{rank.num_ramps}}       },    {% endfor %}   }
 
     </script>
 
@@ -96,12 +99,16 @@
         <div class = "graph-btns">
             <button id ="bar-win-rate-player">Win Rate by Player</button>   
             <button id ="bar-win-rate-color">Win Rate by Color</button>  
-            <br />  
+            <br />
             <button id ="bar-win-rate-deck">Win Rate by Deck</button>
             <button id ="bar-win-rate-commander">Win Rate by Commander</button>
-            <br />
+            <hr />
             <button id ="bar-popular-decks">Most Played Decks</button>
             <button id ="bar-popular-commanders">Most Played Commanders</button>
+            <br />
+            <button id ="bar-popular-colors">Most Played Colors</button>
+            <hr />
+            <button id ="bar-ramped_players">Most Ramped Players</button>
         </div>
         <div id="bar_chart_placeholder"></div>
     </div>
