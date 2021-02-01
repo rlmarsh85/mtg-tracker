@@ -3,6 +3,18 @@
 {% block extra_js %}
         {{ encore_entry_link_tags('jquery.collections') }}
         {{ encore_entry_script_tags('jquery.collections') }}   
+
+
+        {{ encore_entry_script_tags('add-game') }}
+        <script>
+        $(document).ready(function() {
+            // you may need to change this code if you are not using Bootstrap Datepicker
+            $('.js-datepicker').datepicker({
+                format: 'yyyy-mm-dd'
+            });
+        });
+        </script>
+
 {% endblock %}
 
 {% block body %}

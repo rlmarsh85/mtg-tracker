@@ -11,7 +11,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -35,9 +37,16 @@ class GameType extends AbstractType
 
 
         $builder
-            ->add('PlayDate')
+            ->add('PlayDate', DateType::class, [
+                'widget' => 'single_text',
+                'html5' => false,
+                'attr' => ['class' => 'js-datepicker']
+            ])
             ->add('Format')
-            ->add('NumberTurns')          
+            ->add('NumberTurns', NumberType::class, [
+                'required' => false,
+                'input' => 'number'
+            ])          
             ->add('GamePlayers', CollectionType::class, [
                 'entry_type'   => GamePlayerType::class,
                 'label'        => 'Players Info:',
