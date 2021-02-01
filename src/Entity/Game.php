@@ -26,12 +26,12 @@ class Game
     private $PlayDate;
 
     /**
-     * @ORM\Column(type="integer",nullable=true)
+     * @ORM\Column(type="integer",nullable=true,options={"default"=NULL})
      */
     private $NumberTurns;    
 
     /**
-     * @ORM\ManyToOne(targetEntity=GameFormat::class,nullable=false)
+     * @ORM\ManyToOne(targetEntity=GameFormat::class)
      */
     private $Format;
 

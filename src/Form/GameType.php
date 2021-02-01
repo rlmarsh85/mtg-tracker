@@ -42,11 +42,14 @@ class GameType extends AbstractType
                 'html5' => false,
                 'attr' => ['class' => 'js-datepicker']
             ])
-            ->add('Format')
+            ->add('Format', EntityType::class, [
+                'class' => 'App\Entity\GameFormat',
+                'required' => true
+            ])
             ->add('NumberTurns', NumberType::class, [
-                'required' => false,
-                'input' => 'number'
-            ])          
+                'attr' => array('min' => 0, 'max' => 100),
+                'html5' => true
+            ])
             ->add('GamePlayers', CollectionType::class, [
                 'entry_type'   => GamePlayerType::class,
                 'label'        => 'Players Info:',
