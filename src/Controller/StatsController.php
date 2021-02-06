@@ -10,9 +10,6 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\GameRepository;
 use App\Entity\Game;
 
-/**
- * @Route("/stats")
- */
 class StatsController extends AbstractController
 {
     /**
