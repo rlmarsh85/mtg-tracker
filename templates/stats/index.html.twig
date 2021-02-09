@@ -30,88 +30,119 @@
 
 {% endblock %}
 {% block body %}
-    <div class="container-fluid">
-        <div class = "page-header">
-            <h1>Game Stats</h1>
+    <div class="container">
+        <div class="row">
+            <div class = "page-header">
+                <h1>Game Stats</h1>
+            </div>
+        </div>
+        <div class="row">
+        <div class="col-xl-12 col-lg-12">
+            <div class="card shadow mb-4">
+                <div class ="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h4>General Stats</h4>
+                </div>
+                <div class="card-body">
+                    <table style="margin-bottom:50px" class = "table table-hover">
+
+                        <tr>
+                            <td>
+                                Total Games Played
+                            </td>
+                            <td>
+                                {{total_games}} 
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Total Games Played ((c)EDH)
+                            </td>
+                            <td>
+                                {{total_edh_games}} 
+                            </td>
+                        </tr>        
+                        <tr>
+                            <td>
+                                Average Number of Turns
+                            </td>
+                            <td>
+                                {{avg_game_length}}
+                            </td>
+                        </tr> 
+                        <tr>
+                            <td>
+                                Average Number of Turns ((c)EDH)
+                            </td>
+                            <td>
+                                {{avg_game_length_edh}}
+                            </td>
+                        </tr>         
+                        <tr>
+                            <td>
+                                Percent of Games Won with First/Second Turn Sol Ring
+                            </td>
+                            <td>
+                                {{percent_sol_wins}}%
+                            </td>
+                        </tr>                 
+                    </table>
+                </div>
+            </div>
+        </div>
         </div>
     </div>
 
-    <h4>General Stats</h4>
-    <table style="margin-bottom:50px">
-        <tr>
-            <td>
-                Metric
-            </td>
-            <td>
-                Value
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Total Games Played
-            </td>
-            <td>
-                {{total_games}} 
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Total Games Played ((c)EDH)
-            </td>
-            <td>
-                {{total_edh_games}} 
-            </td>
-        </tr>        
-        <tr>
-            <td>
-                Average Number of Turns
-            </td>
-            <td>
-                {{avg_game_length}}
-            </td>
-        </tr> 
-        <tr>
-            <td>
-                Average Number of Turns ((c)EDH)
-            </td>
-            <td>
-                {{avg_game_length_edh}}
-            </td>
-        </tr>         
-        <tr>
-            <td>
-                Percent of Games Won with First/Second Turn Sol Ring
-            </td>
-            <td>
-                {{percent_sol_wins}}%
-            </td>
-        </tr>                 
-    </table>
-    
-
     <div class="visualization">
-        <div class = "graph-btns">
-            <button id ="pie-wins-by-player" class = "btn-primary btn-sm">Total Games Won by Player</button>   
-            <button id ="pie-wins-by-color" class = "btn-primary btn-sm">Total Games Won by Color</button>
-            <br />
-            <button id ="pie-wins-by-deck" class = "btn-primary btn-sm">Total Games Won by Deck</button>
-            <button id ="pie-wins-by-commander" class = "btn-primary btn-sm">Total Games Won by Commander</button>
+        <div class="container">
+        <div class="btn-group">
+         <button type="button" class="btn btn-primary">Chart</button>
+         <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+          <span class="caret"></span>
+         </button>
+         <ul class="dropdown-menu" role="menu">
+            <li><a href="#" id ="pie-wins-by-player">Total Games Won by Player</a></li>   
+            <li><a href="#" id ="pie-wins-by-color">Total Games Won by Color</a></li>
+            <li><a href="#" id ="pie-wins-by-deck">Total Games Won by Deck</a></li>
+            <li><a href="#" id ="pie-wins-by-commander">Total Games Won by Commander</a></li>
+         </ul>
         </div>
+
+ <div class="btn-group">
+  <button type="button" class="btn btn-primary">Sony</button>
+  <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+    <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu" role="menu">
+    <li><a href="#">Tablet</a></li>
+    <li><a href="#">Smartphone</a></li>
+  </ul>
+</div> 
+
+        </div>
+<!--
+        <div class = "btn-group">
+            <button type = "button" id ="pie-wins-by-player" class = "btn btn-primary btn-sm">Total Games Won by Player</button>   
+            <button type = "button"  id ="pie-wins-by-color" class = "btn btn-primary btn-sm">Total Games Won by Color</button>
+            
+            <button type = "button"  id ="pie-wins-by-deck" class = "btn btn-primary btn-sm">Total Games Won by Deck</button>
+            <button type = "button"  id ="pie-wins-by-commander" class = "btn btn-primary btn-sm">Total Games Won by Commander</button>
+        </div>
+        -->
         <div id="pie_chart_placeholder" ></div>
     </div>
     <div class="visualization">
-        <div class = "graph-btns">
+        <div class = "graph-btns btn-group">
             <button id ="bar-win-rate-player" class = "btn-primary btn-sm">Win Rate by Player</button>   
             <button id ="bar-win-rate-color" class = "btn-primary btn-sm">Win Rate by Color</button>  
-            <br />
+            
             <button id ="bar-win-rate-deck" class = "btn-primary btn-sm">Win Rate by Deck</button>
             <button id ="bar-win-rate-commander" class = "btn-primary btn-sm">Win Rate by Commander</button>
-            <hr />
+            
             <button id ="bar-popular-decks" class = "btn-primary btn-sm">Most Played Decks</button>
             <button id ="bar-popular-commanders" class = "btn-primary btn-sm">Most Played Commanders</button>
-            <br />
+            
             <button id ="bar-popular-colors" class = "btn-primary btn-sm">Most Played Colors</button>
-            <hr />
+            
             <button id ="bar-ramped_players" class = "btn-primary btn-sm">Most Ramped Players</button>
         </div>
         <div id="bar_chart_placeholder"></div>
