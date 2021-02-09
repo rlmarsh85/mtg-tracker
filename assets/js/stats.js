@@ -366,7 +366,7 @@ function addDataTable(parent_id, class_name, data){
 
 
   var sortAscending = true;
-  var table = d3.select("#" + parent_id).append('table').attr('class',class_name);
+  var table = d3.select("#" + parent_id).append('table').attr('class',class_name + " table-hover");
   var titles = Object.keys(data[Object.keys(data)[0]]);
 
   var headers = table.append('thead').append('tr')

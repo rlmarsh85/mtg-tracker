@@ -30,7 +30,11 @@
 
 {% endblock %}
 {% block body %}
-    <h1>Game Stats</h1>
+    <div class="container-fluid">
+        <div class = "page-header">
+            <h1>Game Stats</h1>
+        </div>
+    </div>
 
     <h4>General Stats</h4>
     <table style="margin-bottom:50px">
@@ -87,28 +91,28 @@
 
     <div class="visualization">
         <div class = "graph-btns">
-            <button id ="pie-wins-by-player">Total Games Won by Player</button>   
-            <button id ="pie-wins-by-color">Total Games Won by Color</button>
+            <button id ="pie-wins-by-player" class = "btn-primary btn-sm">Total Games Won by Player</button>   
+            <button id ="pie-wins-by-color" class = "btn-primary btn-sm">Total Games Won by Color</button>
             <br />
-            <button id ="pie-wins-by-deck">Total Games Won by Deck</button>
-            <button id ="pie-wins-by-commander">Total Games Won by Commander</button>
+            <button id ="pie-wins-by-deck" class = "btn-primary btn-sm">Total Games Won by Deck</button>
+            <button id ="pie-wins-by-commander" class = "btn-primary btn-sm">Total Games Won by Commander</button>
         </div>
         <div id="pie_chart_placeholder" ></div>
     </div>
     <div class="visualization">
         <div class = "graph-btns">
-            <button id ="bar-win-rate-player">Win Rate by Player</button>   
-            <button id ="bar-win-rate-color">Win Rate by Color</button>  
+            <button id ="bar-win-rate-player" class = "btn-primary btn-sm">Win Rate by Player</button>   
+            <button id ="bar-win-rate-color" class = "btn-primary btn-sm">Win Rate by Color</button>  
             <br />
-            <button id ="bar-win-rate-deck">Win Rate by Deck</button>
-            <button id ="bar-win-rate-commander">Win Rate by Commander</button>
+            <button id ="bar-win-rate-deck" class = "btn-primary btn-sm">Win Rate by Deck</button>
+            <button id ="bar-win-rate-commander" class = "btn-primary btn-sm">Win Rate by Commander</button>
             <hr />
-            <button id ="bar-popular-decks">Most Played Decks</button>
-            <button id ="bar-popular-commanders">Most Played Commanders</button>
+            <button id ="bar-popular-decks" class = "btn-primary btn-sm">Most Played Decks</button>
+            <button id ="bar-popular-commanders" class = "btn-primary btn-sm">Most Played Commanders</button>
             <br />
-            <button id ="bar-popular-colors">Most Played Colors</button>
+            <button id ="bar-popular-colors" class = "btn-primary btn-sm">Most Played Colors</button>
             <hr />
-            <button id ="bar-ramped_players">Most Ramped Players</button>
+            <button id ="bar-ramped_players" class = "btn-primary btn-sm">Most Ramped Players</button>
         </div>
         <div id="bar_chart_placeholder"></div>
     </div>

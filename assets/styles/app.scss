@@ -1,6 +1,4 @@
-body {
-  background-color: #F0F0C3;
-}
+
 
 
 // customize some Bootstrap variables
@@ -8,6 +6,8 @@ body {
 
 // the ~ allows you to reference things in node_modules
 @import "~bootstrap/scss/bootstrap";
+
+@import "~startbootstrap-sb-admin-2/scss/sb-admin-2";
 
 
 text {
