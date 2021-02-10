@@ -44,7 +44,7 @@ class Deck
     /**
      * Many Users have Many Groups.
      * @ORM\ManyToMany(targetEntity="Color")
-     * @ORM\JoinTable(name="Decks_Colors",
+     * @ORM\JoinTable(name="decks_dolors",
      *      joinColumns={@ORM\JoinColumn(name="deck_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="color_id", referencedColumnName="id")}
      *      )
