@@ -5,13 +5,13 @@
 //$primary: darken(#428bca, 20%);
 
 // the ~ allows you to reference things in node_modules
-@import "~bootstrap/scss/bootstrap";
+//@import "~bootstrap/scss/bootstrap";
 
 @import "~startbootstrap-sb-admin-2/scss/sb-admin-2";
 
 
 .container{
-    max-width: 90%;
+    max-width: 80%;
 }
 
 
@@ -47,6 +47,10 @@ text {
 
 .white{
   fill:#cfd1db !important;
+}
+
+.azorius{
+  fill:#c7f1ff !important;
 }
 
 div.tooltip-bars, div.tooltip-pie {

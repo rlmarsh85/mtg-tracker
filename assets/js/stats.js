@@ -366,7 +366,7 @@ function addDataTable(parent_id, class_name, data){
 
 
   var sortAscending = true;
-  var table = d3.select("#" + parent_id).append('table').attr('class',class_name + " table-hover");
+  var table = d3.select("#" + parent_id).append('table').attr('class',class_name + " table-hover table");
   var titles = Object.keys(data[Object.keys(data)[0]]);
 
   var headers = table.append('thead').append('tr')
@@ -441,7 +441,7 @@ function addHoverEffect(svg, select_clause, float_div, callback){
 
 function resolveColor(name){
   name = name.toLowerCase();
-  if(name == "red" || name == "blue" || name == "black" || name == "green" || name == "white"){
+  if(name == "red" || name == "blue" || name == "black" || name == "green" || name == "white" || name == "azorius"){
     return name;
   }
   
