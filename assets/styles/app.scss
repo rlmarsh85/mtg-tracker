@@ -149,6 +149,22 @@ text {
   fill:orangered !important;
 }
 
+.chart-placeholder{
+  height:550px;
+}
+
+.data-table-btn{
+  margin-left:5px;
+}
+
+.data-table{
+  margin:50px 20% 0px 20%;
+  max-width:60%
+}
+
+.data-table td, th{
+  text-align:center;
+}
 
 div.tooltip-bars, div.tooltip-pie {
   position: absolute;
@@ -164,7 +180,7 @@ div.tooltip-bars, div.tooltip-pie {
 
 .pie-chart-table, .bar-chart-table{
   display:none;
-  clear:both;
+  clear:both; 
 }
 
 .data-table-control{

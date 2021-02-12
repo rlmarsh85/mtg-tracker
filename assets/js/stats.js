@@ -199,7 +199,7 @@ function updateBarChart(data, svg, float_div, title, dataReturnFunc, floatReturn
   
   addHoverEffect(svg,".bar",float_div, function(d){ return floatReturnFunc(d)});
 
-  addDataTable('bar_chart_placeholder',dataTableClassName,data);
+  addDataTable('bar-chart-table-button-holder',dataTableClassName,data);
 
 
 }
@@ -333,23 +333,24 @@ function updatePieChart(data, svg, float_div, title) {
   .attr("style", "outline: thin solid black;fill:white")
   ;
 
-  addDataTable('pie_chart_placeholder', dataTableClassName, data);
+  addDataTable('pie-chart-table-button-holder', dataTableClassName, data);
   
 }
 
 
 
 function clearDataTable(class_name){
+  
   d3.selectAll('.' + class_name).remove();
   d3.selectAll('.data-table-control-' + class_name).remove();
 }
 
 function addDataTable(parent_id, class_name, data){
-
+  
   var parent_control_div = d3.select("#" + parent_id).append("div");
   
   parent_control_div.append("div")
-  .attr('class', 'data-table-control data-table-control-' + class_name)
+  .attr('class', 'btn btn-info data-table-btn data-table-control data-table-control-' + class_name)
   .html("Show Raw Data")
   .on('click', function(d,i){
     d3.select('.' + class_name)
@@ -357,7 +358,7 @@ function addDataTable(parent_id, class_name, data){
   })
 
   parent_control_div.append("div")
-  .attr('class', ' data-table-control data-table-control-' + class_name)
+  .attr('class', 'btn btn-info data-table-btn data-table-control data-table-control-' + class_name)
   .html("Hide Raw Data")
   .on('click', function(d,i){
     d3.select('.' + class_name)
@@ -366,7 +367,7 @@ function addDataTable(parent_id, class_name, data){
 
 
   var sortAscending = true;
-  var table = d3.select("#" + parent_id).append('table').attr('class',class_name + " table-hover table");
+  var table = d3.select("#" + parent_id).append('table').attr('class',class_name + " table-hover table data-table");
   var titles = Object.keys(data[Object.keys(data)[0]]);
 
   var headers = table.append('thead').append('tr')
