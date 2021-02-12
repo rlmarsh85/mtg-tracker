@@ -8,7 +8,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 use App\Repository\GameRepository;
+use App\Repository\ColorIdentityRepository;
 use App\Entity\Game;
+use App\Entity\ColorIdentity;
 
 class StatsController extends AbstractController
 {
@@ -21,6 +23,7 @@ class StatsController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
 
         $gameRepo = $entityManager->getRepository(Game::class);     
+        $colorIdentityRepo = $entityManager->getRepository(ColorIdentity::class);
 
         $player_ranks = $gameRepo->findPlayerRanks(-1,["EDH","CEDH"]);
         $player_overall_ranks = $gameRepo->findPlayerOverallRanks(-1,["EDH","CEDH"]);
@@ -46,6 +49,8 @@ class StatsController extends AbstractController
         $most_popular_colors = $gameRepo->findMostPopularColors(["EDH", "CEDH"]);
         $most_ramped_players = $gameRepo->findMostRampedPlayers(["EDH", "CEDH"]);
 
+        $color_identities = $colorIdentityRepo->findAll();
+
         return $this->render('stats/index.html.twig', [
             'player_ranks' => $player_ranks,
             'player_overall_ranks' => $player_overall_ranks,
@@ -64,7 +69,8 @@ class StatsController extends AbstractController
             'most_popular_decks' => $most_popular_decks,
             'most_popular_commanders' => $most_popular_commanders,
             'most_popular_colors' => $most_popular_colors,
-            'most_ramped_players' => $most_ramped_players
+            'most_ramped_players' => $most_ramped_players,
+            'color_identities' => $color_identities
 
         ]);
     }

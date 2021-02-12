@@ -299,7 +299,7 @@ function updatePieChart(data, svg, float_div, title) {
   .range(colorRange);
 
   var legendXPos = width / 2;
-  var legendYPos = (height /3) * -1;
+  var legendYPos = ((height /3) * -1) - 50;
 
   svg.append("rect")
   .attr("class", "legendBorder")
@@ -316,7 +316,7 @@ function updatePieChart(data, svg, float_div, title) {
   .shape("path", d3.symbol().type(d3.symbolSquare).size(150)())
   .shapePadding(20)
   .scale(ordinal)
-  .labelWrap(150)
+  .labelWrap(90)
   .labelAlign("start");
 
   svg.select(".legendOrdinal")
@@ -441,7 +441,7 @@ function addHoverEffect(svg, select_clause, float_div, callback){
 
 function resolveColor(name){
   name = name.toLowerCase();
-  if(name == "red" || name == "blue" || name == "black" || name == "green" || name == "white" || name == "azorius"){
+  if(name == "red" || name == "blue" || name == "black" || name == "green" || name == "white" || color_identities.includes(name)){
     return name;
   }
   

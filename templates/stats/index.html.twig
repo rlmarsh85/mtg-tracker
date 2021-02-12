@@ -24,6 +24,8 @@
 
         var most_ramped_players = { {%for rank in most_ramped_players %} "{{rank.name|raw}}": {  "Name":"{{rank.name|raw}}","NumRamps":{{rank.num_ramps}}       },    {% endfor %}   }
 
+        var color_identities =  [{%for color in color_identities %}"{{color.ComboName|lower}}",{% endfor %}] 
+
     </script>
 
     {{ encore_entry_script_tags('stats') }}
@@ -98,7 +100,7 @@
         <div class="row">
 
             <!-- Pie Chart -->
-            <div class="col-xl-6 col-lg-6">
+            <div class="col-xl-67 col-lg-6">
                 <div class="card shadow mb-4">
                     <div
                         class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
