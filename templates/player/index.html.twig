@@ -1,37 +1,50 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Player index{% endblock %}
+{% block title %}Players{% endblock %}
 
 {% block body %}
-    <h1>Player index</h1>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h1>Players</h1>
+            </div>
+        </div>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Nickname</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for player in players %}
-            <tr>
-                <td>{{ player.id }}</td>
-                <td>{{ player.Name }}</td>
-                <td>{{ player.Nickname }}</td>
-                <td>
-                    <a href="{{ path('player_show', {'id': player.id}) }}">show</a>
-                    <a href="{{ path('player_edit', {'id': player.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="3">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('player_new') }}">Create new</a>
+        <div class="row">
+            <div class="col-12">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Name</th>
+                            <th>Nickname</th>
+                            <th>actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for player in players %}
+                        <tr>
+                            <td>{{ player.id }}</td>
+                            <td>{{ player.Name }}</td>
+                            <td>{{ player.Nickname }}</td>
+                            <td>
+                                <a href="{{ path('player_show', {'id': player.id}) }}">show</a>
+                                <a href="{{ path('player_edit', {'id': player.id}) }}">edit</a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="3">no records found</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <a class="btn btn-primary" href="{{ path('player_new') }}">Create new</a>
+            </div>
+        </div>
+    </div>
 {% endblock %}

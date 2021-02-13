@@ -1,4 +1,17 @@
 {{ form_start(form) }}
     {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+    <div class = "row">
+        <div class = "col-6">
+            <button class="btn btn-primary">{{ button_label|default('Save') }}</button>
+        </div>
+
+    
 {{ form_end(form) }}
+
+        {% if is_update|default(false) == true %}
+        <div class = "col-6 delete-btn">
+             {{ include('player/_delete_form.html.twig') }}
+        </div>
+        {% endif %}
+
+    </div>        
