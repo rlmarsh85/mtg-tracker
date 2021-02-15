@@ -3,11 +3,14 @@
 {% block title %}Edit Commander{% endblock %}
 
 {% block body %}
-    <h1>Edit Commander</h1>
+    <div class = "container">
+        <h1>Edit Commander</h1>
+        <div class = "row">
+            <div class = "col-8">
+                {{ include('commander/_form.html.twig', {'button_label': 'Update', 'is_update': true}) }}
+            </div>
+        </div>
 
-    {{ include('commander/_form.html.twig', {'button_label': 'Update'}) }}
-
-    <a href="{{ path('commander_index') }}">back to list</a>
-
-    {{ include('commander/_delete_form.html.twig') }}
+        <a href="{{ path('commander_index') }}"><- Back to List</a>
+    </div>
 {% endblock %}

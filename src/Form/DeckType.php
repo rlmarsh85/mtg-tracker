@@ -33,10 +33,7 @@ class DeckType extends AbstractType
             ->add('colors', EntityType::class,[
               'class' => 'App\Entity\Color',
               'multiple' => true,
-              'expanded' => true,
-              'row_attr' => ['class' => 'text-editor']
-              //'attr' => ['class' => 'form-control'],
-              //'choice_attr' => function($choice, $key, $value) { return ['class' => 'form-check-input']; }
+              'expanded' => true
             ])
 
             ->add('commanders', EntityType::class,[

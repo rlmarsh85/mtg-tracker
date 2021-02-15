@@ -15,9 +15,12 @@ class CommanderType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('Name')
+            ->add('Name', TextType::class, [
+                'attr' => ['class' => 'form-control']
+            ])
             ->add('Scryfall_URL',TextType::class,[
-              'label' => 'Scryfall URl'
+              'label' => 'Scryfall URL',
+              'attr' => ['class' => 'form-control']
             ])
             ->add('colors', EntityType::class,[
               'class' => 'App\Entity\Color',

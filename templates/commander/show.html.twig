@@ -1,38 +1,49 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Commander{% endblock %}
+{% block title %}{{ commander.Name }}{% endblock %}
 
 {% block body %}
-    <h1>Commander</h1>
+    <div class = "container">
+        <h1>{{ commander.Name }}</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ commander.id }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <td>{{ commander.Name }}</td>
-            </tr>
-            <tr>
-                <th>Scryfall_URL</th>
-                <td>{{ commander.ScryfallURL }}</td>
-            </tr>
-            <tr>
-                <th>Colors</th>
-                <td>
-                  {% for color in commander.Colors %}
-                    {{ color.name }}
-                  {% endfor %}
-                </td>
-            </tr>
-        </tbody>
-    </table>
+        <div class = "row">
+            <div class = "col-8">
+                <table class="table table-hover">
+                    <tbody>
+                        <tr>
+                            <th>ID</th>
+                            <td>{{ commander.id }}</td>
+                        </tr>
+                        <tr>
+                            <th>Name</th>
+                            <td>{{ commander.Name }}</td>
+                        </tr>
+                        <tr>
+                            <th>Scryfall_URL</th>
+                            <td>{{ commander.ScryfallURL }}</td>
+                        </tr>
+                        <tr>
+                            <th>Colors</th>
+                            <td>
+                            {% for color in commander.Colors %}
+                                {{ color.name }}
+                            {% endfor %}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-    <a href="{{ path('commander_index') }}">back to list</a>
+        <div class = "row">
+            <div class = "col-6">
+                <a class = "btn btn-primary" href="{{ path('commander_edit', {'id': commander.id}) }}">Edit</a>
+            </div>
+            <div class = "col-6">
+                {{ include('commander/_delete_form.html.twig') }}
+            </div>
+        </div>
 
-    <a href="{{ path('commander_edit', {'id': commander.id}) }}">edit</a>
-
-    {{ include('commander/_delete_form.html.twig') }}
+        <a href="{{ path('commander_index') }}"><- Back to List</a>
+    </div>
 {% endblock %}

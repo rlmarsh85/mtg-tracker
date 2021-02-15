@@ -3,9 +3,11 @@
 {% block title %}New Commander{% endblock %}
 
 {% block body %}
-    <h1>Create new Commander</h1>
+    <div class = "container">
+        <h1>Create New Commander</h1>
 
-    {{ include('commander/_form.html.twig') }}
+        {{ include('commander/_form.html.twig') }}
 
-    <a href="{{ path('commander_index') }}">back to list</a>
+        <a href="{{ path('commander_index') }}"><- Back to List</a>
+    </div>
 {% endblock %}
