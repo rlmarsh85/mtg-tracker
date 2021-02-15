@@ -1,4 +1,37 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+    
+    {{ form_label(form.Name) }}
+    {{ form_widget(form.Name) }}
+
+    {{ form_label(form.Description) }}
+    {{ form_widget(form.Description) }}    
+
+    {{ form_label(form.primary_format) }}
+    {{ form_widget(form.primary_format) }}    
+
+    {{ form_label(form.primary_player) }}
+    {{ form_widget(form.primary_player) }}    
+
+    {{ form_label(form.colors) }}
+    {% for field in form.colors %}
+       <div>
+         {{ form_widget(field) }}
+         {{ form_label(field) }}
+       </div>
+    {% endfor %}
+
+    {{ form_label(form.commanders) }}
+    {{ form_widget(form.commanders) }}        
+    <div class = "row">
+        <div class = "col-6">
+            <button class="btn btn-primary">{{ button_label|default('Save') }}</button>
+        </div>
 {{ form_end(form) }}
+
+        {% if is_update|default(false) == true %}
+        <div class = "col-6 delete-btn">
+             {{ include('deck/_delete_form.html.twig') }}
+        </div>
+        {% endif %}
+
+    </div> 

@@ -7,33 +7,44 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class DeckType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('Name')
-            ->add('Description')
+            ->add('Name', TextType::class, [
+              'attr' => ['class' => 'form-control']
+            ])
+            ->add('Description', TextType::class, [
+              'attr' => ['class' => 'form-control']
+            ])
             ->add('primary_format', EntityType::class, [
-                'class' => 'App\Entity\GameFormat'
+                'class' => 'App\Entity\GameFormat',
+                'attr' => ['class' => 'form-control']
               ] )
 
             ->add('primary_player', EntityType::class,[
-              'class' => 'App\Entity\Player'
+              'class' => 'App\Entity\Player',
+              'attr' => ['class' => 'form-control']
             ])
 
             ->add('colors', EntityType::class,[
               'class' => 'App\Entity\Color',
               'multiple' => true,
-              'expanded' => true
+              'expanded' => true,
+              'row_attr' => ['class' => 'text-editor']
+              //'attr' => ['class' => 'form-control'],
+              //'choice_attr' => function($choice, $key, $value) { return ['class' => 'form-check-input']; }
             ])
 
             ->add('commanders', EntityType::class,[
               'class' => 'App\Entity\Commander',
               'multiple' => true,
               'expanded' => false,
-              'label' => 'Commander(s)'
+              'label' => 'Commander(s)',
+              'attr' => ['class' => 'form-control']
             ])
             
         ;

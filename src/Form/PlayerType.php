@@ -12,13 +12,7 @@ class PlayerType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-/*
-        ->add('PlayDate', DateType::class, [
-            'widget' => 'single_text',
-            'html5' => false,
-            'attr' => ['class' => 'js-datepicker']
-        ])        
-*/
+
         $builder
             ->add('Name', TextType::class, [
                 'attr' => ['class' => 'form-control']
