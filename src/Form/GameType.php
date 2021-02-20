@@ -67,6 +67,7 @@ class GameType extends AbstractType
 
         $builder->add('save', SubmitType::class, [
             'label' => 'Save Game',
+            'attr' => ['class' => 'btn btn-primary']
         ]);        
         
         

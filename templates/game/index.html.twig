@@ -1,38 +1,43 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Game index{% endblock %}
+{% block title %}Games{% endblock %}
 {% block extra_js %}
 
 {% endblock %}
 {% block body %}
-    <h1>Game index</h1>
-    
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>PlayDate</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for game in games %}
-            <tr>
-                <td>{{ game.id }}</td>
-                <td>{{ game.PlayDate ? game.PlayDate|date('Y-m-d') : '' }}</td>
-                <td>
-                    <a href="{{ path('game_show', {'id': game.id}) }}">show</a>
-                    <a href="{{ path('game_edit', {'id': game.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="3">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <div class = "container">
+        <h1>Games</h1>
+        <div class = "row">
+            <div class = "col-8">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Play Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for game in games %}
+                        <tr>
+                            <td>{{ game.id }}</td>
+                            <td>{{ game.PlayDate ? game.PlayDate|date('Y-m-d') : '' }}</td>
+                            <td>
+                                <a href="{{ path('game_show', {'id': game.id}) }}">show</a>
+                                <a href="{{ path('game_edit', {'id': game.id}) }}">edit</a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="3">no records found</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-    <a href="{{ path('game_new') }}">Create new</a>
+        <a class = "btn btn-primary" href="{{ path('game_new') }}">Create New</a>
+    </div>
 {% endblock %}
 

@@ -1,26 +1,65 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Game{% endblock %}
+{% block title %}Game {{game.id}} - {{ game.PlayDate ? game.PlayDate|date('Y-m-d') : '' }}{% endblock %}
 
 {% block body %}
-    <h1>Game</h1>
+    <div class = "container">
+        <h1>Game {{game.id}} - {{ game.PlayDate ? game.PlayDate|date('Y-m-d') : '' }}</h1>
+        <div class = "row">
+            <div class = "col-9">
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <th>ID</th>
+                            <td>{{ game.id }}</td>
+                        </tr>
+                        <tr>
+                            <th>Play Date</th>
+                            <td>{{ game.PlayDate ? game.PlayDate|date('Y-m-d') : '' }}</td>
+                        </tr>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ game.id }}</td>
-            </tr>
-            <tr>
-                <th>PlayDate</th>
-                <td>{{ game.PlayDate ? game.PlayDate|date('Y-m-d') : '' }}</td>
-            </tr>
-        </tbody>
-    </table>
+                        <tr>
+                            <th>Format</th>
+                            <td>{{ game.Format }}</td>
+                        </tr>
 
-    <a href="{{ path('game_index') }}">back to list</a>
+                        <tr>
+                            <th>Number of Truns</th>
+                            <td>{{ game.NumberTurns }}</td>
+                        </tr>
 
-    <a href="{{ path('game_edit', {'id': game.id}) }}">edit</a>
+                        <tr>
+                            <th>Players</th>
+                            <td>{%for player in game.gamePlayers %}
+                                    {{ player.getPlayer }}  - {{player.getDeck}}<br/>
+                                {% endfor %} 
+                            </td>
+                        </tr>
 
-    {{ include('game/_delete_form.html.twig') }}
+                        <tr>
+                            <th>Winning Player</th>
+                            <td>{%for player in game.gamePlayers %}
+                                    {% if player.WinningPlayer %}
+                                        <strong>{{player.getPlayer}}<strong>
+                                    {% endif %}
+                                {% endfor %} 
+                            </td>
+                        </tr>                                                          
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class = "row">
+            <div class = "col-4">
+                <a class = 'btn btn-primary' href="{{ path('game_edit', {'id': game.id}) }}">Edit</a>
+            </div>
+            <div class = "col-4">
+                {{ include('game/_delete_form.html.twig') }}
+            </div>
+        </div>
+
+        <a href="{{ path('game_index') }}"><- Back to List</a>
+    </div>
 {% endblock %}
