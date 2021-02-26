@@ -40,19 +40,24 @@ class GameType extends AbstractType
             ->add('PlayDate', DateType::class, [
                 'widget' => 'single_text',
                 'html5' => false,
-                'attr' => ['class' => 'js-datepicker']
+                'attr' => ['class' => 'js-datepicker form-control']
             ])
             ->add('Format', EntityType::class, [
                 'class' => 'App\Entity\GameFormat',
-                'required' => true
+                'required' => true,
+                'attr' => ['class' => 'form-control']
             ])
             ->add('NumberTurns', NumberType::class, [
-                'attr' => array('min' => 0, 'max' => 100),
+                'attr' => [
+                    'min' => 0, 
+                    'max' => 100, 
+                    'class' => 'form-control'
+                ],
                 'html5' => true
             ])
             ->add('GamePlayers', CollectionType::class, [
                 'entry_type'   => GamePlayerType::class,
-                'label'        => 'Players Info:',
+                'label'        => 'Players',
                 'allow_add'    => true,
                 'allow_delete' => true,
                 'prototype'    => true,

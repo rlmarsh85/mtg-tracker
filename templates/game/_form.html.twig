@@ -25,8 +25,25 @@
                 'jquery.collection.html.twig'
                 'gameplayers-theme.html.twig'
         %}
-        {{ form(form) }}
+        
+        <div class ="col-8">
+            {{ form_label(form.PlayDate) }}
+            {{ form_widget(form.PlayDate) }}           
+
+            {{ form_label(form.Format) }}
+            {{ form_widget(form.Format) }}              
+
+            {{ form_label(form.NumberTurns) }}
+            {{ form_widget(form.NumberTurns) }}
+        </div>
     </div>
+    <div class = "row">
+        <div class = "col-12">
+            {{ form_label(form.GamePlayers) }}
+            {{ form_widget(form.GamePlayers) }}
+        </div>                
+    </div>
+
     <div class = "row">
         {% if is_update|default(false) == true %}
         
